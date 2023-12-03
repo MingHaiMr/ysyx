@@ -54,6 +54,38 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args)
+{
+    if(args == NULL)
+    {
+        cpu_exec(1);
+    }
+    else
+    {
+        int nums = atoi(args);
+        cpu_exec(nums);   
+    }
+    return 0;
+}
+
+static int cmd_info(char *args)
+{
+    char *arg=strtok(NULL," ");
+    if(arg == NULL)
+    {
+        return 0;
+    }
+    else if(strcmp(arg,"r")==0)
+    {
+        isa_reg_display();
+    }
+    else if(strcmp(arg,"w")==0)
+    {
+        //print_watchpoints();
+    }
+    return 0;
+}
+        
 static struct {
   const char *name;
   const char *description;
@@ -62,7 +94,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si","Execution for one step" , cmd_si }, 
+  { "info","print regs" , cmd_info},
   /* TODO: Add more commands */
 
 };
@@ -124,7 +157,9 @@ void sdb_mainloop() {
 
     int i;
     for (i = 0; i < NR_CMD; i ++) {
+      //printf("%d  ",strcmp(cmd, cmd_table[i].name));
       if (strcmp(cmd, cmd_table[i].name) == 0) {
+        printf("%d  ",cmd_table[i].handler(args));
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
