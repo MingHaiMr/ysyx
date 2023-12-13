@@ -18,7 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-
+#include <memory/paddr.h>
 static int is_batch_mode = false;
 
 void init_regex();
@@ -85,6 +85,27 @@ static int cmd_info(char *args)
     }
     return 0;
 }
+
+static int cmd_x(char *args)
+{
+    char *N=strtok(NULL," ");
+    char *start=strtok(NULL," ");
+    int n,i;
+    char *str;
+    n=atoi(N);
+    paddr_t addr;
+    addr=strtol(start,&str,16);
+    //printf("%08x\n",addr);
+    //data=paddr_read(addr+4,4);
+    //printf("%08x\n",data);
+    //printf("%d",n);
+    for(i=0;i<n;i++)
+    {
+        paddr_t data=paddr_read(addr+i*4,4);
+        printf("0x%08x\n",data);
+    }
+    return 0;
+}
         
 static struct {
   const char *name;
@@ -96,6 +117,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si","Execution for one step" , cmd_si }, 
   { "info","print regs" , cmd_info},
+  { "x", "scan memory" , cmd_x},
   /* TODO: Add more commands */
 
 };
@@ -159,7 +181,8 @@ void sdb_mainloop() {
     for (i = 0; i < NR_CMD; i ++) {
       //printf("%d  ",strcmp(cmd, cmd_table[i].name));
       if (strcmp(cmd, cmd_table[i].name) == 0) {
-        printf("%d  ",cmd_table[i].handler(args));
+        //printf("%d  ",cmd_table[i].handler(args));
+        
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
