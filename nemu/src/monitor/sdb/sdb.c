@@ -106,7 +106,16 @@ static int cmd_x(char *args)
     }
     return 0;
 }
-        
+
+static int cmd_p(char *args)
+{
+  char *e=strtok(NULL," ");
+  bool flag=false;
+  expr(e,&flag);
+  return 0;
+}
+
+
 static struct {
   const char *name;
   const char *description;
@@ -118,6 +127,7 @@ static struct {
   { "si","Execution for one step" , cmd_si }, 
   { "info","print regs" , cmd_info},
   { "x", "scan memory" , cmd_x},
+  {"p", "compute expr" , cmd_p},
   /* TODO: Add more commands */
 
 };

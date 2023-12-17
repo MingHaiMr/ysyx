@@ -19,9 +19,10 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
-
+#include <string.h>
+#include <stdlib.h>
 enum {
-  TK_NOTYPE = 256, TK_EQ,TK_LEFTBRACKET,TK_RIGHTBRACKET,
+  TK_NOTYPE = 256, TK_EQ, TK_LEFTBRACKET, TK_RIGHTBRACKET, NUM,
 
   /* TODO: Add more token types */
 
@@ -39,11 +40,12 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
-  {"-", '-'},           // minus
+  {"\\-", '-'},           // minus
   {"\\*", '*'},         // multiply
-  {"\\", '\\'},         // eliminate
-  {"(", '('},           // left bracket
-  {")", ')'},           // right bracket
+  {"\\/", '/'},         // eliminate
+  {"\\(", '('},           // left bracket
+  {"\\)", ')'},           // right bracket
+  {"[0-9]*", NUM}         // num
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -74,7 +76,7 @@ typedef struct token {
 
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
-
+static int num_of_token;
 static bool make_token(char *e) {
   int position = 0;
   int i;
@@ -100,7 +102,49 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
+            case '+': 
+              tokens[nr_token].type='+';
+              nr_token++;
+            break;
+            case TK_EQ:
+              tokens[nr_token].type=TK_EQ;
+              nr_token++;
+            break;
+            case '-':
+              tokens[nr_token].type='-';
+              nr_token++;
+            break;
+            case '*':
+              tokens[nr_token].type='*';
+              nr_token++;
+            break;
+            case '/':
+              tokens[nr_token].type='/';
+              nr_token++;
+            break;
+            case '(':
+              tokens[nr_token].type='(';
+              nr_token++;
+            break;
+            case ')':
+              tokens[nr_token].type=')';
+              nr_token++;
+            break;
+            case NUM:
+              tokens[nr_token].type=NUM;
+              char str_tmp[32];
+              int i;
+              for(i=0;i<substr_len;i++)
+              {
+                str_tmp[i]=*(substr_start+i);
+              }
+              str_tmp[i]='\0';
+              strcpy(tokens[nr_token].str,str_tmp);
+              nr_token++;
+            break;
+            default: 
+              printf("no rules");
+            break;
         }
 
         break;
@@ -112,10 +156,145 @@ static bool make_token(char *e) {
       return false;
     }
   }
-
+  num_of_token=nr_token;
   return true;
 }
 
+bool check_parentheses(int p,int q)
+{
+    char bracket_stack[128];
+    int top=-1,i;
+    if(tokens[p].type!='('||tokens[q].type!=')')
+    {
+      return false;
+    }
+    else
+    {
+      p++;q--;
+      if(q>p)
+      {
+        for(i=p;i<=q;i++)
+        {
+          if(tokens[i].type=='(')
+          {
+            bracket_stack[++top]='(';
+          }
+          else if(tokens[i].type==')')
+          {
+            if(bracket_stack[top]=='(')
+            {
+              top--;
+            }
+            else
+            {
+              return false;
+            }
+          }
+        }
+        if(top==-1)
+        {
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      } 
+      else
+      {
+        return false;
+      }
+    }
+}
+/*compute the main operation position
+ *scan all the ops and sort to get the main operation
+ */
+struct ops
+{
+  char op;
+  int position;
+};
+typedef struct ops operate;
+operate oop[128];
+int cmp(const void *p1,const void *p2)
+{
+  struct ops *a=(struct ops *)p1;
+	struct ops *b=(struct ops *)p2;
+	if((a->op=='*'||a->op=='/')&&(b->op=='+'||b->op=='-'))
+	{
+		return -1;
+	}
+	else if((b->op=='*'||b->op=='/')&&(a->op=='+'||a->op=='-'))
+	{
+		return 1;
+	}
+	else
+	{
+		if(a->position<b->position)
+		{
+			return -1;
+		}
+		else if(a->position>b->position)
+		{
+			return 1;
+		}
+		else
+			return 0;
+	}
+}
+
+word_t eval(int p, int q) {
+  if (p > q) {
+    /* Bad expression */
+    assert(0);
+    return -1;
+  }
+  else if (p == q) {
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+    int num=atoi(tokens[p].str);
+    return num;
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1);
+  }
+  else {
+    int i,j,cnt=0;
+    for(i=p;i<=q;i++)
+    {
+      if(tokens[i].type=='(')
+      {
+        for(j=i;tokens[j].type!=')';j++);
+        i=j;
+      }
+      else if(tokens[i].type=='+'||tokens[i].type=='-'||tokens[i].type=='*'||tokens[i].type=='/')
+      {
+        oop[cnt].op=tokens[i].type;
+        oop[cnt].position=i;
+        cnt++;
+      }
+    }
+    qsort(oop,cnt,sizeof(operate),cmp);
+
+    int main_op = oop[cnt-1].position;
+    int op_type=tokens[main_op].type;
+    uint32_t val1 = eval(p, main_op - 1);
+    uint32_t val2 = eval(main_op + 1, q);
+
+    switch (op_type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      default: assert(0);
+    }
+  }
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -124,7 +303,9 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
+  //make_token(e);
+  int p=0,q=num_of_token-1;
+  uint32_t res=eval(p,q);
+  printf("%u",res);
   return 0;
 }

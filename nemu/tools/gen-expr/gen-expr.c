@@ -30,10 +30,69 @@ static char *code_format =
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
-
-static void gen_rand_expr() {
-  buf[0] = '\0';
+uint32_t choose(uint32_t n)
+{
+  uint32_t num=(rand())%n;
+  return num;
 }
+
+int buf_len=0;
+
+void gen_num()
+{
+  char str[32]={'\0'};
+  uint32_t num = rand()%100;
+  while(num==0)
+  {
+    num=rand()%100;
+  }
+  sprintf(str,"%u",num);
+  int len=strlen(str),i;
+  for(i=0; i<len; i++)
+  {
+    buf[buf_len++]=str[i];
+  }
+  memset(str,0,sizeof(str));
+}
+
+void gen(char ch)
+{
+  buf[buf_len++]=ch;
+}
+
+void gen_rand_op()
+{
+  switch(choose(4))
+  {
+    case 0:
+      buf[buf_len++]='+';
+    break;
+    case 1:
+      buf[buf_len++]='-';
+    break;
+    case 2:
+      buf[buf_len++]='*';
+    break;
+    default:
+      buf[buf_len++]='/';  
+    break;    
+  }
+}
+static void gen_rand_expr() {
+  if(buf_len>=65535)
+  {
+    printf("length of expr over!");
+    memset(buf,0,sizeof(buf));
+    buf_len=0;
+    return;
+  }
+  switch (choose(3)) {
+    case 0: gen_num(); break;
+    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+  }
+}
+
 
 int main(int argc, char *argv[]) {
   int seed = time(0);
@@ -45,9 +104,8 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     gen_rand_expr();
-
+    buf[buf_len]='\0';
     sprintf(code_buf, code_format, buf);
-
     FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
     fputs(code_buf, fp);
@@ -64,6 +122,9 @@ int main(int argc, char *argv[]) {
     pclose(fp);
 
     printf("%u %s\n", result, buf);
+    memset(buf,0,sizeof(buf));
+    buf_len=0;
   }
   return 0;
 }
+
