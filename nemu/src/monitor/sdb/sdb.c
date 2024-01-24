@@ -19,6 +19,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 #include <memory/paddr.h>
+#include "watchpoint.h"
 static int is_batch_mode = false;
 
 void init_regex();
@@ -49,6 +50,7 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;
   return -1;
 }
 
@@ -81,7 +83,7 @@ static int cmd_info(char *args)
     }
     else if(strcmp(arg,"w")==0)
     {
-        //print_watchpoints();
+        print_watchpoints();
     }
     return 0;
 }
@@ -115,7 +117,18 @@ static int cmd_p(char *args)
   return 0;
 }
 
+static int cmd_w(char *args)
+{
+  create_watchpoint(args);
+  return 0;
+}
 
+static int cmd_d(char *args)
+{
+  int number = atoi(args);
+  delete_watchpoint(number);
+  return 0;
+}
 static struct {
   const char *name;
   const char *description;
@@ -127,7 +140,9 @@ static struct {
   { "si","Execution for one step" , cmd_si }, 
   { "info","print regs" , cmd_info},
   { "x", "scan memory" , cmd_x},
-  {"p", "compute expr" , cmd_p},
+  { "p", "compute expr" , cmd_p},
+  { "w", "set watchpoint", cmd_w},
+  { "d", "delete watchpoint", cmd_d}
   /* TODO: Add more commands */
 
 };

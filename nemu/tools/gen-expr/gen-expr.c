@@ -41,10 +41,10 @@ int buf_len=0;
 void gen_num()
 {
   char str[32]={'\0'};
-  uint32_t num = rand()%100;
+  uint32_t num = rand()%20;
   while(num==0)
   {
-    num=rand()%100;
+    num=rand()%20;
   }
   sprintf(str,"%u",num);
   int len=strlen(str),i;
@@ -81,9 +81,10 @@ void gen_rand_op()
 static void gen_rand_expr() {
   if(buf_len>=65535)
   {
-    printf("length of expr over!");
-    memset(buf,0,sizeof(buf));
-    buf_len=0;
+    //printf("length of expr over!");
+    //assert(0);
+    //memset(buf,0,sizeof(buf));
+    //buf_len=0;
     return;
   }
   switch (choose(3)) {
@@ -111,7 +112,7 @@ int main(int argc, char *argv[]) {
     fputs(code_buf, fp);
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc -Werror /tmp/.code.c -o /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
