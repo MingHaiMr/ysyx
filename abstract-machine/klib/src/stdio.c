@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-void itoa(int n, char str[], int radix) {
+void itoa(int n, char *str, int radix) {
   int i = 0;
   int sign = n;
   if(sign < 0) n = -n;
@@ -14,10 +14,12 @@ void itoa(int n, char str[], int radix) {
   } while((n /= radix) != 0);
   if(sign < 0) str[i++] = '-';
   str[i] = '\0';
-  for(int j = 0; j < i / 2; j++) {
-    char c = str[j];
-    str[j] = str[i - j - 1];
-    str[i - j - 1] = c;
+  char reverse[100] = {'\0'};
+  for (int j = 0; j < i; j++) {
+    reverse[j] = str[i - j - 1];
+  }
+  for (int j = 0; j < i; j++) {
+    str[j] = reverse[j];
   }
 }
 
@@ -28,7 +30,7 @@ int printf(const char *fmt, ...) {
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
   char *str;
-  char tmp[100];
+  char tmp[100] = {'\0'};
   for(str = out; *fmt; fmt++) {
     if(*fmt != '%') {
       *(str++) = *fmt;
@@ -60,6 +62,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       tmp[i] = '\0';
     }
   }
+  *str = '\0';
   //panic("Not implemented");
   return str - out;
 }
@@ -67,7 +70,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *out, const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
-  int len = vsprintf(NULL, fmt, ap);
+  int len = vsprintf(out, fmt, ap);
   va_end(ap);
   return len;
   //panic("Not implemented");
