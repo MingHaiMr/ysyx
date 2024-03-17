@@ -17,6 +17,7 @@
 #include <memory/paddr.h>
 #include <device/mmio.h>
 #include <isa.h>
+#include </home/haiming//Desktop/ysyx-workbench/nemu/src/utils/trace.h>
 
 #if   defined(CONFIG_PMEM_MALLOC)
 static uint8_t *pmem = NULL;
@@ -28,11 +29,13 @@ uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
+  IFDEF(CONFIG_MTRACE, pread_dump(addr, len));
   word_t ret = host_read(guest_to_host(addr), len);
   return ret;
 }
 
 static void pmem_write(paddr_t addr, int len, word_t data) {
+  IFDEF(CONFIG_MTRACE, pwrite_dump(addr, len, data));
   host_write(guest_to_host(addr), len, data);
 }
 

@@ -18,6 +18,8 @@
 #include <cpu/difftest.h>
 #include <locale.h>
 #include </home/haiming//Desktop/ysyx-workbench/nemu/src/monitor/sdb/watchpoint.h>
+#include </home/haiming//Desktop/ysyx-workbench/nemu/src/utils/trace.h>
+
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
@@ -96,6 +98,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
+  irbuf_dump();//Display the instruction buffer
   isa_reg_display();
   statistic();
 }
