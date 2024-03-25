@@ -51,6 +51,15 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root__trace_init_sub__TOP__0(Vysyx_230
     tracep->declBus(c+39,"fun3", false,-1, 2,0);
     tracep->declBit(c+40,"fun7", false,-1);
     tracep->popNamePrefix(1);
+    tracep->pushNamePrefix("dpi1 ");
+    tracep->declBus(c+34,"inst", false,-1, 31,0);
+    tracep->declBit(c+33,"clk", false,-1);
+    tracep->popNamePrefix(1);
+    tracep->pushNamePrefix("pcRegister ");
+    tracep->declBit(c+33,"clk", false,-1);
+    tracep->declBit(c+35,"rst", false,-1);
+    tracep->declBus(c+36,"pc_out", false,-1, 31,0);
+    tracep->popNamePrefix(1);
     tracep->pushNamePrefix("register1 ");
     tracep->declBus(c+47,"ADDR_WIDTH", false,-1, 31,0);
     tracep->declBus(c+48,"DATA_WIDTH", false,-1, 31,0);

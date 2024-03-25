@@ -3,6 +3,7 @@
 // See Vysyx_23060187_top.h for the primary calling header
 
 #include "verilated.h"
+#include "verilated_dpi.h"
 
 #include "Vysyx_23060187_top___024root.h"
 
@@ -47,16 +48,27 @@ VL_INLINE_OPT void Vysyx_23060187_top___024root___nba_sequent__TOP__0(Vysyx_2306
                    : ((IData)(4U) + vlSelf->pc));
 }
 
+void Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(IData/*31:0*/ inst, CData/*0:0*/ &is_ebreak__Vfuncrtn);
+
 VL_INLINE_OPT void Vysyx_23060187_top___024root___nba_sequent__TOP__1(Vysyx_23060187_top___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___nba_sequent__TOP__1\n"); );
     // Init
+    CData/*0:0*/ __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout;
+    __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout = 0;
     CData/*4:0*/ __Vdlyvdim0__ysyx_23060187_top__DOT__register3__DOT__rf__v0;
     __Vdlyvdim0__ysyx_23060187_top__DOT__register3__DOT__rf__v0 = 0;
     IData/*31:0*/ __Vdlyvval__ysyx_23060187_top__DOT__register3__DOT__rf__v0;
     __Vdlyvval__ysyx_23060187_top__DOT__register3__DOT__rf__v0 = 0;
     // Body
+    Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(vlSelf->inst, __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout);
+    if (VL_UNLIKELY(__Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout)) {
+        VL_WRITEF("EBREAK\n");
+        VL_FINISH_MT("vsrc/dpi.v", 6, "");
+    } else {
+        VL_WRITEF("NOT EBREAK\n");
+    }
     __Vdlyvval__ysyx_23060187_top__DOT__register3__DOT__rf__v0 
         = vlSelf->result;
     __Vdlyvdim0__ysyx_23060187_top__DOT__register3__DOT__rf__v0 
@@ -72,10 +84,10 @@ void Vysyx_23060187_top___024root___eval_nba(Vysyx_23060187_top___024root* vlSel
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___eval_nba\n"); );
     // Body
-    if (vlSelf->__VnbaTriggered.at(0U)) {
+    if (vlSelf->__VnbaTriggered.at(1U)) {
         Vysyx_23060187_top___024root___nba_sequent__TOP__0(vlSelf);
     }
-    if (vlSelf->__VnbaTriggered.at(1U)) {
+    if (vlSelf->__VnbaTriggered.at(0U)) {
         Vysyx_23060187_top___024root___nba_sequent__TOP__1(vlSelf);
         vlSelf->__Vm_traceActivity[1U] = 1U;
     }

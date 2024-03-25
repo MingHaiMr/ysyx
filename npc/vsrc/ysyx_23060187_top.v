@@ -35,15 +35,10 @@ module ysyx_23060187_top(
     //ysyx_23060187_registerFile register2(.clk(clk), .wdata(0), .waddr(0), .wen(0), .raddr(rs2[4:0]), .rdata(opnumber2[31:0]));
     ysyx_23060187_ALU alu(.opnum1(opnumber1[31:0]), .opnum2(imm[31:0]), .result(result[31:0]));
     ysyx_23060187_registerFile register3(.clk(clk), .wdata(result[31:0]), .waddr(rd[4:0]), .wen(1), .raddr(0), .rdata(unusedata[31:0]));
+    ysyx_23060187_pcRegister pcRegister(.clk(clk), .rst(rst), .pc_out(pc));
+    dpi dpi1(.inst(inst[31:0]), .clk(clk));
+
     
-    always @(posedge clk) begin
-        if(!rst) begin
-            pc <= 32'h80000000;
-        end
-        else begin
-            pc <= pc + 4;
-        end
-    end
        
 
 

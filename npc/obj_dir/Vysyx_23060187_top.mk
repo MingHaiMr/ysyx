@@ -35,17 +35,25 @@ VM_PREFIX = Vysyx_23060187_top
 VM_MODPREFIX = Vysyx_23060187_top
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
+	-I/home/haiming/Desktop/ysyx-workbench/npc/csrc/include \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
+	cpu \
+	init \
 	main \
+	paddr \
+	dpi \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
 	./csrc \
+	./csrc/cpu \
+	./csrc/memory \
+	./csrc/utils \
 
 
 ### Default rules...
@@ -57,7 +65,15 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
+cpu.o: ./csrc/cpu/cpu.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+init.o: ./csrc/init.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 main.o: ./csrc/main.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+paddr.o: ./csrc/memory/paddr.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+dpi.o: ./csrc/utils/dpi.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 ### Link rules... (from --exe)

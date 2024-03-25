@@ -3,9 +3,22 @@
 // See Vysyx_23060187_top.h for the primary calling header
 
 #include "verilated.h"
+#include "verilated_dpi.h"
 
 #include "Vysyx_23060187_top__Syms.h"
 #include "Vysyx_23060187_top___024root.h"
+
+extern "C" svBit is_ebreak(int inst);
+
+VL_INLINE_OPT void Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(IData/*31:0*/ inst, CData/*0:0*/ &is_ebreak__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP\n"); );
+    // Body
+    int inst__Vcvt;
+    for (size_t inst__Vidx = 0; inst__Vidx < 1; ++inst__Vidx) inst__Vcvt = inst;
+    svBit is_ebreak__Vfuncrtn__Vcvt;
+    is_ebreak__Vfuncrtn__Vcvt = is_ebreak(inst__Vcvt);
+    is_ebreak__Vfuncrtn = (1U & is_ebreak__Vfuncrtn__Vcvt);
+}
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vysyx_23060187_top___024root___dump_triggers__ico(Vysyx_23060187_top___024root* vlSelf);
@@ -33,12 +46,12 @@ void Vysyx_23060187_top___024root___eval_triggers__act(Vysyx_23060187_top___024r
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___eval_triggers__act\n"); );
     // Body
-    vlSelf->__VactTriggered.at(0U) = (((IData)(vlSelf->clk) 
+    vlSelf->__VactTriggered.at(0U) = ((IData)(vlSelf->clk) 
+                                      & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk)));
+    vlSelf->__VactTriggered.at(1U) = (((IData)(vlSelf->clk) 
                                        & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk))) 
                                       | ((IData)(vlSelf->rst) 
                                          & (~ (IData)(vlSelf->__Vtrigrprev__TOP__rst))));
-    vlSelf->__VactTriggered.at(1U) = ((IData)(vlSelf->clk) 
-                                      & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk)));
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
     vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
 #ifdef VL_DEBUG
