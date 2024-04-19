@@ -11,7 +11,7 @@
 #include "utils.h"
 #include "paddr.h"
 
-#include </home/haiming//Desktop/ysyx-workbench/npc/obj_dir/Vysyx_23060187_top.h>
+#include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
 
 #endif
 

@@ -10,7 +10,7 @@ default: Vysyx_23060187_top
 # Perl executable (from $PERL)
 PERL = perl
 # Path to Verilator kit (from $VERILATOR_ROOT)
-VERILATOR_ROOT = /usr/local/share/verilator
+VERILATOR_ROOT = /usr/share/verilator
 # SystemC include directory with systemc.h (from $SYSTEMC_INCLUDE)
 SYSTEMC_INCLUDE ?= 
 # SystemC library directory with libsystemc.a (from $SYSTEMC_LIBDIR)
@@ -35,7 +35,7 @@ VM_PREFIX = Vysyx_23060187_top
 VM_MODPREFIX = Vysyx_23060187_top
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-I/home/haiming/Desktop/ysyx-workbench/npc/csrc/include \
+	-I/home/haiming/ysyx/npc/csrc/include \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \

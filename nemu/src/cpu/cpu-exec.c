@@ -17,8 +17,8 @@
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
-#include </home/haiming//Desktop/ysyx-workbench/nemu/src/monitor/sdb/watchpoint.h>
-#include </home/haiming//Desktop/ysyx-workbench/nemu/src/utils/trace.h>
+#include </home/haiming/ysyx/nemu/src/monitor/sdb/watchpoint.h>
+#include </home/haiming/ysyx/nemu/src/utils/trace.h>
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.

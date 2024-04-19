@@ -22,7 +22,7 @@ void sdb_set_batch_mode() {
 void parse_args(int argc, char *argv[]) {
   /* Parse the arguments. */
     printf("Parsing the arguments...\n");
-    printf("%s\n", argv[0]);
+    printf("%s\n", argv[1]);
     const struct option table[] = {
         {"batch", no_argument, NULL, 'b'},
         {"log", required_argument, NULL, 'l'},
@@ -32,15 +32,16 @@ void parse_args(int argc, char *argv[]) {
         {0, 0, NULL, 0},
     };
     int o;
-    while(o = getopt_long(argc, argv, "-bl:d:i:h", table, NULL) != -1) {
+    while(o = getopt_long(argc, argv, "bl:d:i:h", table, NULL) != -1) {
         
         switch(o) {
             case 'b': sdb_set_batch_mode(); break;
             case 'l': assert(optarg != NULL); log_file = optarg; break;
             case 'd': assert(optarg != NULL); diff_so_file = optarg; break;
             case 'i': assert(optarg != NULL); img_file = optarg; break;
-            case 'h':
+            case 'h': break;
             default:
+                img_file = optarg;
                 printf("o: %c\n", o);
                 printf("Usage: %s [OPTION...] IMAGE [args]\n", argv[0]);
                 printf("\t-b,--batch              run with batch mode\n");
@@ -48,7 +49,7 @@ void parse_args(int argc, char *argv[]) {
                 printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
                 printf("\t-i,--img=IMG            load IMG to memory\n");
                 printf("\n");
-                exit(0);
+                break;
         }
     }
     return;
