@@ -5,7 +5,7 @@ always @(posedge clk) begin
         $display("EBREAK");
         $finish;
     end else begin
-        $display("NOT EBREAK");
+        //$display("NOT EBREAK");
     end
 end
 endmodule

@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
     sim_init();
     init_monitor(argc, argv);
-    excute(20);
+    excute(30);
     final();
     return 0;
 }

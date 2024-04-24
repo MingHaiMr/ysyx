@@ -63,7 +63,11 @@ void restart()
         {
             top->rst = 0;
         }
-        top->inst = inst_fetch(&top->pc, 4);
+        if(top->clk == 1)
+        {
+            top->inst = inst_fetch(&top->pc, 4);
+            top->eval();
+        }
     }
 }
 
@@ -72,6 +76,11 @@ void excute_once()
     contextp->timeInc(1);
     clk_eval();
     restart();
+    if(top->clk == 1)
+    {
+        printf("pc: %08x\n", top->pc);
+        printf("inst: %08x\n", top->inst);
+    }
     dump_wave();
 }
 

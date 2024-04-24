@@ -19,6 +19,7 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
     VL_OUT8(fun3,2,0);
     VL_OUT8(fun7,0,0);
     VL_OUT8(rs2,4,0);
+    CData/*0:0*/ ysyx_23060187_top__DOT__jalr;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __Vtrigrprev__TOP__rst;
     CData/*0:0*/ __VactContinue;
@@ -26,12 +27,16 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
     VL_OUT(pc,31,0);
     VL_OUT(result,31,0);
     VL_OUT(unusedata,31,0);
+    IData/*31:0*/ ysyx_23060187_top__DOT__imm;
+    IData/*31:0*/ ysyx_23060187_top__DOT__src1;
+    IData/*31:0*/ ysyx_23060187_top__DOT__opnumber1;
+    IData/*31:0*/ ysyx_23060187_top__DOT__opnumber2;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 32> ysyx_23060187_top__DOT__register1__DOT__rf;
     VlUnpacked<IData/*31:0*/, 32> ysyx_23060187_top__DOT__register3__DOT__rf;
-    VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
+    VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;
     VlTriggerVec<2> __VactTriggered;

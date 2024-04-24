@@ -72,6 +72,7 @@ void load_img()
         printf("Can not open the image file.\n");
         return;
     }
+    printf("%s\n", img_file);
     fseek(fp, 0, SEEK_END);
     long size = ftell(fp);
     fseek(fp, 0, SEEK_SET);
