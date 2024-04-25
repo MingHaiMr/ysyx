@@ -147,6 +147,7 @@ static struct {
 
 };
 
+#define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
 #define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_help(char *args) {

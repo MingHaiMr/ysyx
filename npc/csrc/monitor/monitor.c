@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../init.h"
+#include "sdb.h"
 char *img_file = NULL;
 char *log_file = NULL;
 char *diff_so_file = NULL;
@@ -15,9 +16,7 @@ void init_monitor(int argc, char *argv[]) {
   load_img();
 }
 
-void sdb_set_batch_mode() {
-  
-}
+
 
 void parse_args(int argc, char *argv[]) {
   /* Parse the arguments. */
@@ -42,13 +41,13 @@ void parse_args(int argc, char *argv[]) {
             case 'h': break;
             default:
                 img_file = optarg;
-                printf("o: %c\n", o);
-                printf("Usage: %s [OPTION...] IMAGE [args]\n", argv[0]);
-                printf("\t-b,--batch              run with batch mode\n");
-                printf("\t-l,--log=FILE           output log to FILE\n");
-                printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
-                printf("\t-i,--img=IMG            load IMG to memory\n");
-                printf("\n");
+                //printf("o: %c\n", o);
+                //printf("Usage: %s [OPTION...] IMAGE [args]\n", argv[0]);
+                //printf("\t-b,--batch              run with batch mode\n");
+                //printf("\t-l,--log=FILE           output log to FILE\n");
+                //printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
+                //printf("\t-i,--img=IMG            load IMG to memory\n");
+                //printf("\n");
                 break;
         }
     }

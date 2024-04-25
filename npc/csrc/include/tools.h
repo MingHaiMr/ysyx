@@ -93,10 +93,39 @@ void excute(uint32_t cycles)
    }
 }
 
+void statistic()
+{
+  
+}
+void cpu_exec(uint64_t n) {
+  switch (npc_state.state) {
+    case NPC_END: case NPC_ABORT:
+      printf("Program execution has ended.\n");
+      return;
+    default: npc_state.state = NPC_RUNNING;
+  }
+
+  execute(n);
+
+  switch (npc_state.state) {
+    case NPC_RUNNING: npc_state.state = NPC_STOP; break;
+
+    case NPC_END: case NPC_ABORT:
+      Log("nemu: %s at pc = 0x%08x",
+          (npc_state.state == NPC_ABORT ? ANSI_FMT("ABORT", ANSI_FG_RED) :
+           (npc_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
+            ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
+          nemu_state.halt_pc);
+      // fall through
+    case NPC_QUIT: statistic();
+  }
+}
+
 void final()
 {
     tfp->close();
 }
+
 
 
 
