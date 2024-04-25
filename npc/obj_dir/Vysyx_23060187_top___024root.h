@@ -35,7 +35,6 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
     IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 32> ysyx_23060187_top__DOT__register1__DOT__rf;
-    VlUnpacked<IData/*31:0*/, 32> ysyx_23060187_top__DOT__register3__DOT__rf;
     VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;

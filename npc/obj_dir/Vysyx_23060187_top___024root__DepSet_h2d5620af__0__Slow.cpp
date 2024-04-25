@@ -76,71 +76,7 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root___dump_triggers__stl(Vysyx_230601
 }
 #endif  // VL_DEBUG
 
-VL_ATTR_COLD void Vysyx_23060187_top___024root___stl_sequent__TOP__0(Vysyx_23060187_top___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___stl_sequent__TOP__0\n"); );
-    // Body
-    vlSelf->fun7 = (1U & (vlSelf->inst >> 0x1eU));
-    vlSelf->rs2 = (0x1fU & (vlSelf->inst >> 0x14U));
-    vlSelf->unusedata = vlSelf->ysyx_23060187_top__DOT__register3__DOT__rf
-        [0U];
-    vlSelf->ysyx_23060187_top__DOT__src1 = vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf
-        [(0x1fU & (vlSelf->inst >> 0xfU))];
-    vlSelf->fun3 = (7U & (vlSelf->inst >> 0xcU));
-    vlSelf->opcode = (0x7fU & vlSelf->inst);
-    vlSelf->ysyx_23060187_top__DOT__imm = (((3U == (IData)(vlSelf->opcode)) 
-                                            | ((0x13U 
-                                                == (IData)(vlSelf->opcode)) 
-                                               | (0x67U 
-                                                  == (IData)(vlSelf->opcode))))
-                                            ? (((- (IData)(
-                                                           (vlSelf->inst 
-                                                            >> 0x1fU))) 
-                                                << 0xcU) 
-                                               | (vlSelf->inst 
-                                                  >> 0x14U))
-                                            : (((0x17U 
-                                                 == (IData)(vlSelf->opcode)) 
-                                                | (0x37U 
-                                                   == (IData)(vlSelf->opcode)))
-                                                ? (0xfffff000U 
-                                                   & vlSelf->inst)
-                                                : (
-                                                   ((- (IData)(
-                                                               (vlSelf->inst 
-                                                                >> 0x1fU))) 
-                                                    << 0x14U) 
-                                                   | ((0xff000U 
-                                                       & vlSelf->inst) 
-                                                      | ((0x800U 
-                                                          & (vlSelf->inst 
-                                                             >> 9U)) 
-                                                         | (0x7feU 
-                                                            & (vlSelf->inst 
-                                                               >> 0x14U)))))));
-    vlSelf->ysyx_23060187_top__DOT__jalr = ((0x67U 
-                                             == (IData)(vlSelf->opcode)) 
-                                            & (0U == (IData)(vlSelf->fun3)));
-    vlSelf->ysyx_23060187_top__DOT__opnumber2 = (((
-                                                   (0x13U 
-                                                    == (IData)(vlSelf->opcode)) 
-                                                   & (0U 
-                                                      == (IData)(vlSelf->fun3))) 
-                                                  | (0x17U 
-                                                     == (IData)(vlSelf->opcode)))
-                                                  ? vlSelf->ysyx_23060187_top__DOT__imm
-                                                  : 4U);
-    vlSelf->ysyx_23060187_top__DOT__opnumber1 = (((0x17U 
-                                                   == (IData)(vlSelf->opcode)) 
-                                                  | ((0x6fU 
-                                                      == (IData)(vlSelf->opcode)) 
-                                                     | (IData)(vlSelf->ysyx_23060187_top__DOT__jalr)))
-                                                  ? vlSelf->pc
-                                                  : vlSelf->ysyx_23060187_top__DOT__src1);
-    vlSelf->result = (vlSelf->ysyx_23060187_top__DOT__opnumber1 
-                      + vlSelf->ysyx_23060187_top__DOT__opnumber2);
-}
+void Vysyx_23060187_top___024root___ico_sequent__TOP__0(Vysyx_23060187_top___024root* vlSelf);
 
 VL_ATTR_COLD void Vysyx_23060187_top___024root___eval_stl(Vysyx_23060187_top___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -148,7 +84,7 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root___eval_stl(Vysyx_23060187_top___0
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___eval_stl\n"); );
     // Body
     if (vlSelf->__VstlTriggered.at(0U)) {
-        Vysyx_23060187_top___024root___stl_sequent__TOP__0(vlSelf);
+        Vysyx_23060187_top___024root___ico_sequent__TOP__0(vlSelf);
         vlSelf->__Vm_traceActivity[2U] = 1U;
         vlSelf->__Vm_traceActivity[1U] = 1U;
         vlSelf->__Vm_traceActivity[0U] = 1U;
@@ -228,9 +164,6 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root___ctor_var_reset(Vysyx_23060187_t
     vlSelf->ysyx_23060187_top__DOT__opnumber2 = VL_RAND_RESET_I(32);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
-    }
-    for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
-        vlSelf->ysyx_23060187_top__DOT__register3__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->__Vtrigrprev__TOP__clk = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__rst = VL_RAND_RESET_I(1);
