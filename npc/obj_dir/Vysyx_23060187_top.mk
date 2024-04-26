@@ -47,6 +47,7 @@ VM_USER_CLASSES = \
 	main \
 	paddr \
 	monitor \
+	sdc \
 	dpi \
 
 # User .cpp directories (from .cpp's on Verilator command line)
@@ -55,6 +56,7 @@ VM_USER_DIR = \
 	./csrc/cpu \
 	./csrc/memory \
 	./csrc/monitor \
+	./csrc/monitor/sdb \
 	./csrc/utils \
 
 
@@ -76,6 +78,8 @@ main.o: ./csrc/main.cpp
 paddr.o: ./csrc/memory/paddr.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 monitor.o: ./csrc/monitor/monitor.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+sdc.o: ./csrc/monitor/sdb/sdc.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 dpi.o: ./csrc/utils/dpi.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<

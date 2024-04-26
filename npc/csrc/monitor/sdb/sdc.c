@@ -1,5 +1,6 @@
 #include "sdb.h"
-
+#include <readline/history.h>
+#include <readline/readline.h>
 
 static int is_batch_mode = false;
 
@@ -96,7 +97,7 @@ void engine_start() {
     sdb_main_loop();
 }
 
-void sdb_mainloop() {
+void sdb_main_loop() {
   if (is_batch_mode) {
     cmd_c(NULL);
     return;

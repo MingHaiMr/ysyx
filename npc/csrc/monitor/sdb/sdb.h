@@ -3,8 +3,8 @@
 
 #include "common.h"
 #include "utils.h"
-#include <readline/readline.h>
-#include <readline/history.h>
+
+
 #include "tools.h"
 #include <string.h>
 

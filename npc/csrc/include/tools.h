@@ -16,6 +16,7 @@
 #endif
 
 
+
 VerilatedContext *contextp=NULL;
 VerilatedVcdC* tfp=NULL;
 static Vysyx_23060187_top* top;
@@ -105,17 +106,17 @@ void cpu_exec(uint64_t n) {
     default: npc_state.state = NPC_RUNNING;
   }
 
-  execute(n);
+  excute(n);
 
   switch (npc_state.state) {
     case NPC_RUNNING: npc_state.state = NPC_STOP; break;
 
     case NPC_END: case NPC_ABORT:
-      Log("nemu: %s at pc = 0x%08x",
+      printf("nemu: %s at pc = 0x%08x",
           (npc_state.state == NPC_ABORT ? ANSI_FMT("ABORT", ANSI_FG_RED) :
            (npc_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
-          nemu_state.halt_pc);
+          npc_state.halt_pc);
       // fall through
     case NPC_QUIT: statistic();
   }
