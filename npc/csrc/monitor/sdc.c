@@ -1,6 +1,7 @@
-#include "sdb.h"
+#include "../include/monitor.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <string.h>
 
 static int is_batch_mode = false;
 

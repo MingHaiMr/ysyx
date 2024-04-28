@@ -1,7 +1,6 @@
 #include "./include/utils.h"
 #include "init.h"
 #include <stdio.h>
-#include "./include/tools.h"
 #include <getopt.h>
 #include "./include/monitor.h"
 

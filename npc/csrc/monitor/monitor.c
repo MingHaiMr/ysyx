@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../init.h"
-#include "./sdb/sdb.h"
 char *img_file = NULL;
 char *log_file = NULL;
 char *diff_so_file = NULL;

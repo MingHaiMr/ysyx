@@ -56,7 +56,6 @@ VM_USER_DIR = \
 	./csrc/cpu \
 	./csrc/memory \
 	./csrc/monitor \
-	./csrc/monitor/sdb \
 	./csrc/utils \
 
 
@@ -79,7 +78,7 @@ paddr.o: ./csrc/memory/paddr.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 monitor.o: ./csrc/monitor/monitor.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-sdc.o: ./csrc/monitor/sdb/sdc.c
+sdc.o: ./csrc/monitor/sdc.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 dpi.o: ./csrc/utils/dpi.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
