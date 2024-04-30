@@ -12,9 +12,9 @@ module ysyx_23060187_instDecode(
     wire I_type;
     wire J_type;
 
-    wire [31:0]U_imm;
-    wire [31:0]I_imm;
-    wire [31:0]J_imm;
+    wire [31:0] U_imm;
+    wire [31:0] I_imm;
+    wire [31:0] J_imm;
 
     assign opcode = inst[6:0];
     assign fun3 = inst[14:12];

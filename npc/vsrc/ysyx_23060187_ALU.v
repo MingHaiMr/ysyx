@@ -1,8 +1,8 @@
 module ysyx_23060187_ALU(
-    input [3:0]ALUctrl,
-    input [31:0]opnum1,
-    input [31:0]opnum2,
-    output reg [31:0]result,
+    input [3:0] ALUctrl,
+    input [31:0] opnum1,
+    input [31:0] opnum2,
+    output reg [31:0] result,
     output zero
 );
     assign zero = (result == 0);

@@ -20,7 +20,7 @@ RUNFLAGS := --img $(IMG)
 NPC_EXEC := ./obj_dir/Vysyx_23060187_top
 
 compile: $(V_FILE) $(C_FILE)
-	verilator $(C_F) $(VERILATOR_FLAGS) $(C_FILE) $(V_FILE) 
+	verilator $(C_F) $(VERILATOR_FLAGS) $(C_FILE) $(V_FILE)
 run: compile                  
 	$(call git_commit, "sim NPC")
 	$(NPC_EXEC) $(RUNFLAGS)

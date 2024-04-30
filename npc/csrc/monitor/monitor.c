@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../init.h"
+#include <string.h>
+
+
+
 char *img_file = NULL;
 char *log_file = NULL;
 char *diff_so_file = NULL;
@@ -33,7 +37,7 @@ void parse_args(int argc, char *argv[]) {
     while(o = getopt_long(argc, argv, "bl:d:i:h", table, NULL) != -1) {
         
         switch(o) {
-            case 'b': sdb_set_batch_mode(); break;
+            case 'b': break;//sdb_set_batch_mode(); break;
             case 'l': assert(optarg != NULL); log_file = optarg; break;
             case 'd': assert(optarg != NULL); diff_so_file = optarg; break;
             case 'i': assert(optarg != NULL); img_file = optarg; break;
@@ -87,4 +91,3 @@ void load_img()
 }
 
 
-  

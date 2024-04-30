@@ -4,7 +4,6 @@
 #include <verilated.h>
 #include <verilated_vcd_c.h>
 
-
 #include "cpu.h"
 #include "common.h"
 #include "host.h"

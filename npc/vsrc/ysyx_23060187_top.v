@@ -1,33 +1,33 @@
 module ysyx_23060187_top(
     input clk,
-    input [31:0]inst,
+    input [31:0] inst,
     input rst,
-    output reg [31:0]pc,
-    output [31:0]result,
-    output [6:0]opcode,
-    output [2:0]fun3,
+    output reg [31:0] pc,
+    output [31:0] result,
+    output [6:0] opcode,
+    output [2:0] fun3,
     output fun7,
-    output [31:0]unusedata,
-    output [4:0]rs2
+    output [31:0] unusedata,
+    output [4:0] rs2
 );
 
-    //wire [6:0]opcode;
-    wire [4:0]rs1;
-    //wire [4:0]rs2;
+    //wire [6:0] opcode;
+    wire [4:0] rs1;
+    //wire [4:0] rs2;
     wire auipc;
     wire jal;
     wire jalr;
     wire lui;
-    wire [4:0]rd;
-    wire [31:0]imm;
-    wire [31:0]src1;
-    wire [31:0]opnumber1;
-    wire [31:0]opnumber2;
+    wire [4:0] rd;
+    wire [31:0] imm;
+    wire [31:0] src1;
+    wire [31:0] opnumber1;
+    wire [31:0] opnumber2;
     wire wen;
-    wire [3:0]ALUctrl;
+    wire [3:0] ALUctrl;
     wire addi;
     wire zero;
-    wire [31:0]wdata;
+    wire [31:0] wdata;
 
     assign opnumber1 = (auipc | jal | jalr) ? pc : src1;
     assign opnumber2 = (addi | auipc) ? imm : 32'd4;
