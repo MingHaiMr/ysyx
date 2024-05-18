@@ -13,7 +13,8 @@ VERILATOR_FLAGS += --top-module ysyx_23060187_top
 
 INC_PATH := $(WORK_DIR)/csrc/include $(INC_PATH)
 INCLUDES := $(addprefix -I, $(INC_PATH))
-C_F += -CFLAGS "$(INCLUDES)"
+C_F += -CFLAGS
+C_F += -CFLAGS "$(INCLUDES)" 
 
 IMG ?= ../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
 RUNFLAGS := --img $(IMG)
