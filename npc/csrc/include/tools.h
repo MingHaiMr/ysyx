@@ -9,9 +9,8 @@
 #include "host.h"
 #include "utils.h"
 #include "paddr.h"
-
 #include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
-
+#include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top___024root.h>
 #endif
 
 
@@ -131,6 +130,7 @@ void final()
 static int is_batch_mode = false;
 
 void sdb_main_loop();
+void isa_reg_display();
 
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -196,6 +196,29 @@ static int cmd_x(char *args)
     return 0;
 }
 
+static int cmd_info(char *args)
+{
+    char *arg=strtok(NULL," ");
+    if(arg == NULL)
+    {
+        return 0;
+    }
+    else if(strcmp(arg,"r")==0)
+    {
+        isa_reg_display();
+    }
+    return 0;
+}
+
+void isa_reg_display()
+{
+  int i;
+  for(i = 0;i < 32;i++)
+  {
+    printf("0x%08x\n", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);
+  }
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -205,7 +228,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si","Execution for one step" , cmd_si }, 
-  //{ "info","print regs" , cmd_info},
+  { "info","print regs" , cmd_info},
   { "x", "scan memory" , cmd_x},
   //{ "p", "compute expr" , cmd_p},
   //{ "w", "set watchpoint", cmd_w},
