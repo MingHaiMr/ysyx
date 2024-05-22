@@ -8,15 +8,17 @@
 #include "Vysyx_23060187_top__Syms.h"
 #include "Vysyx_23060187_top___024root.h"
 
-extern "C" svBit is_ebreak(int inst);
+extern "C" svBit is_ebreak(int inst, int gpr10);
 
-VL_INLINE_OPT void Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(IData/*31:0*/ inst, CData/*0:0*/ &is_ebreak__Vfuncrtn) {
+VL_INLINE_OPT void Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(IData/*31:0*/ inst, IData/*31:0*/ gpr10, CData/*0:0*/ &is_ebreak__Vfuncrtn) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP\n"); );
     // Body
     int inst__Vcvt;
     for (size_t inst__Vidx = 0; inst__Vidx < 1; ++inst__Vidx) inst__Vcvt = inst;
+    int gpr10__Vcvt;
+    for (size_t gpr10__Vidx = 0; gpr10__Vidx < 1; ++gpr10__Vidx) gpr10__Vcvt = gpr10;
     svBit is_ebreak__Vfuncrtn__Vcvt;
-    is_ebreak__Vfuncrtn__Vcvt = is_ebreak(inst__Vcvt);
+    is_ebreak__Vfuncrtn__Vcvt = is_ebreak(inst__Vcvt, gpr10__Vcvt);
     is_ebreak__Vfuncrtn = (1U & is_ebreak__Vfuncrtn__Vcvt);
 }
 

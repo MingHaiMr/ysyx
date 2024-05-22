@@ -8,9 +8,10 @@
 
 #include <assert.h>
 #include <stdlib.h>
-
+#include <readline/readline.h>
+#include <readline/history.h>
 #define likely(cond) __builtin_expect(cond,1)
-
+#define SDB 1
 typedef unsigned int uint32_t; 
 typedef unsigned long uint64_t;
 typedef unsigned short int uint16_t;

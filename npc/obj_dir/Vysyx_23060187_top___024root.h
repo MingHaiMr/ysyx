@@ -20,6 +20,7 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
     VL_OUT8(fun7,0,0);
     VL_OUT8(rs2,4,0);
     CData/*0:0*/ ysyx_23060187_top__DOT__jalr;
+    CData/*0:0*/ __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __Vtrigrprev__TOP__rst;
     CData/*0:0*/ __VactContinue;

@@ -23,9 +23,50 @@ void itoa(int n, char *str, int radix) {
   }
 }
 
+int vprintf(void (*putch)(char), const char *fmt, va_list ap) {
+  char tmp[100] = {'\0'};
+  int pos = 0;
+  for( ; *fmt; fmt++) {
+    if(*fmt != '%') {
+      putch(*fmt);
+      pos++;
+      continue;
+    }
+    fmt++;
+    pos++;
+    switch(*fmt) {
+      case 'd': 
+        itoa(va_arg(ap, int), tmp, 10);
+        for(int i = 0; i < strlen(tmp); i++) {
+          putch(tmp[i]);
+          pos++;
+        }
+        break;
+      case 's':
+        char *s = va_arg(ap, char *);
+        while(*s) {
+          putch(*(s++));
+          pos++;
+        }
+        break;
+      default:
+        assert(0);
+        break;
+    }
+    for(int i = 0; i < 100; i++) {
+      tmp[i] = '\0';
+    }
+  }
+  return pos;
+}
+
 int printf(const char *fmt, ...) {
-  
-  panic("Not implemented");
+  va_list ap;
+  va_start(ap, fmt);
+  int len = vprintf(putch, fmt, ap);
+  va_end(ap);
+  return len;
+  //panic("Not implemented");
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {

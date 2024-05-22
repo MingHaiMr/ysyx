@@ -7,6 +7,8 @@
 
 #include "Vysyx_23060187_top___024root.h"
 
+void Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(IData/*31:0*/ inst, IData/*31:0*/ gpr10, CData/*0:0*/ &is_ebreak__Vfuncrtn);
+
 VL_INLINE_OPT void Vysyx_23060187_top___024root___ico_sequent__TOP__0(Vysyx_23060187_top___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -14,6 +16,15 @@ VL_INLINE_OPT void Vysyx_23060187_top___024root___ico_sequent__TOP__0(Vysyx_2306
     // Body
     vlSelf->fun7 = (1U & (vlSelf->inst >> 0x1eU));
     vlSelf->rs2 = (0x1fU & (vlSelf->inst >> 0x14U));
+    Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(vlSelf->inst, 
+                                                                                vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf
+                                                                                [0xaU], vlSelf->__Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout);
+    if (VL_UNLIKELY(vlSelf->__Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout)) {
+        VL_WRITEF("\n\033[1;34mebreak! pc : 0x%08x $a0 : 0x%08x\n\033[0m\n\n",
+                  32,vlSelf->pc,32,vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf
+                  [0xaU]);
+        VL_FINISH_MT("vsrc/dpi.v", 8, "");
+    }
     vlSelf->ysyx_23060187_top__DOT__src1 = vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf
         [(0x1fU & (vlSelf->inst >> 0xfU))];
     vlSelf->fun3 = (7U & (vlSelf->inst >> 0xcU));
@@ -102,25 +113,16 @@ VL_INLINE_OPT void Vysyx_23060187_top___024root___nba_sequent__TOP__0(Vysyx_2306
                            : ((IData)(4U) + vlSelf->pc))));
 }
 
-void Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(IData/*31:0*/ inst, CData/*0:0*/ &is_ebreak__Vfuncrtn);
-
 VL_INLINE_OPT void Vysyx_23060187_top___024root___nba_sequent__TOP__1(Vysyx_23060187_top___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___nba_sequent__TOP__1\n"); );
     // Init
-    CData/*0:0*/ __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout;
-    __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout = 0;
     CData/*4:0*/ __Vdlyvdim0__ysyx_23060187_top__DOT__register1__DOT__rf__v0;
     __Vdlyvdim0__ysyx_23060187_top__DOT__register1__DOT__rf__v0 = 0;
     IData/*31:0*/ __Vdlyvval__ysyx_23060187_top__DOT__register1__DOT__rf__v0;
     __Vdlyvval__ysyx_23060187_top__DOT__register1__DOT__rf__v0 = 0;
     // Body
-    Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(vlSelf->inst, __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout);
-    if (VL_UNLIKELY(__Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout)) {
-        VL_WRITEF("EBREAK\n");
-        VL_FINISH_MT("vsrc/dpi.v", 6, "");
-    }
     __Vdlyvval__ysyx_23060187_top__DOT__register1__DOT__rf__v0 
         = ((0x37U == (IData)(vlSelf->opcode)) ? vlSelf->ysyx_23060187_top__DOT__imm
             : vlSelf->result);
@@ -137,6 +139,15 @@ VL_INLINE_OPT void Vysyx_23060187_top___024root___nba_comb__TOP__0(Vysyx_2306018
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___nba_comb__TOP__0\n"); );
     // Body
+    Vysyx_23060187_top___024root____Vdpiimwrap_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak_TOP(vlSelf->inst, 
+                                                                                vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf
+                                                                                [0xaU], vlSelf->__Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout);
+    if (VL_UNLIKELY(vlSelf->__Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout)) {
+        VL_WRITEF("\n\033[1;34mebreak! pc : 0x%08x $a0 : 0x%08x\n\033[0m\n\n",
+                  32,vlSelf->pc,32,vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf
+                  [0xaU]);
+        VL_FINISH_MT("vsrc/dpi.v", 8, "");
+    }
     vlSelf->ysyx_23060187_top__DOT__opnumber1 = (((0x17U 
                                                    == (IData)(vlSelf->opcode)) 
                                                   | ((0x6fU 

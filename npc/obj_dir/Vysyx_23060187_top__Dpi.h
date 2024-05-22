@@ -17,7 +17,7 @@ extern "C" {
 
     // DPI IMPORTS
     // DPI import at vsrc/dpi.v:2:29
-    extern svBit is_ebreak(int inst);
+    extern svBit is_ebreak(int inst, int gpr10);
 
 #ifdef __cplusplus
 }
