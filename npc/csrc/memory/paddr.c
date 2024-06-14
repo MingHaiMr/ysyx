@@ -1,5 +1,7 @@
 #include "../include/paddr.h"
 #include "../include/host.h"
+#include "svdpi.h"
+#include "Vysyx_23060187_top__Dpi.h"
 
 
 static uint8_t pmem[MEMORY_SIZE] PG_ALIGN = {};
@@ -7,28 +9,36 @@ static uint8_t pmem[MEMORY_SIZE] PG_ALIGN = {};
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - MEMORY_BASE; }
 paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + MEMORY_BASE; }
 
-static word_t pmem_read(paddr_t addr, int len) {
-  word_t ret = host_read(guest_to_host(addr), len);
+extern int pmem_read(int raddr) {
+  if(likely(in_pmem(raddr))){
+    word_t ret = host_read(guest_to_host(raddr & ~0x3u), 4);
+  }
   return ret;
 }
 
-static void pmem_write(paddr_t addr, int len, word_t data) {
-  host_write(guest_to_host(addr), len, data);
+extern void pmem_write(int waddr, int wdata, char wmask) {
+  if(likely(in_pmem(waddr))) {
+    word_t write_select = 0;
+    uint8_t mask = wmask;
+    word_t unwrited_data = pmem_read(waddr & ~0x3u);
+    for(int i = 0; i < 4; i ++)
+    {
+      if(mask & 1)
+      {
+        for(int j = 0; j < 8; j ++)
+        {
+          write_select = write_select | (word_t)(1 << (i * 8 + j)); 
+        }
+      }
+      mask >>= 1;
+    }
+    unwrited_data = unwrited_data & (~write_select);
+    wdata = wdata & write_select;
+    host_write(guest_to_host(waddr & ~0x3u), 4, (wdata | unwrited_data));
+  }
 }
 
-word_t paddr_read(paddr_t addr, int len) {
-  if (likely(in_pmem(addr))) return pmem_read(addr, len);
-  return 0;
-}
 
-void paddr_write(paddr_t addr, int len, word_t data) {
-  if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
-}
 
-word_t vaddr_read(vaddr_t addr , int len ){
-    return paddr_read(addr,len);
-}
 
-void vaddr_write(vaddr_t addr , int len ,word_t data ){
-    paddr_write(addr, len , data );
-}
+

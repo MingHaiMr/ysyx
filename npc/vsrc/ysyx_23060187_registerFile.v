@@ -16,5 +16,5 @@ module ysyx_23060187_registerFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   assign rdata1 = rf[raddr1];
   assign rdata2 = rf[raddr2];
   assign GPR10 = rf[10];
-  
+
 endmodule

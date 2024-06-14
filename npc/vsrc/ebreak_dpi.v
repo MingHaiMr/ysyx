@@ -1,4 +1,4 @@
-module dpi(input [31:0]inst, input [31:0]gpr10, input [31:0]pc);
+module ebreak_dpi(input [31:0]inst, input [31:0]gpr10, input [31:0]pc);
 import "DPI-C" function bit is_ebreak(input int inst, input int gpr10);
 always @(*) begin
     if(is_ebreak(inst, gpr10) == 1) begin

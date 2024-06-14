@@ -25,7 +25,17 @@ module ysyx_23060187_maincontroller(
     output srli,
     output slli,
     output bge,
-    output bgeu
+    output bgeu,
+    output sra,
+    output srai,
+    output blt,
+    output bltu,
+    output mul,
+    output mulh,
+    output div,
+    output divu,
+    output rem,
+    output remu
 );
 
     assign auipc = (opcode == 7'b0010111);
@@ -51,9 +61,21 @@ module ysyx_23060187_maincontroller(
     assign slli = (opcode == 7'b0010011) && (fun3 == 3'b001) && (fun7 == 7'b0000000);
     assign bge = (opcode == 7'b1100011) && (fun3 == 3'b101);
     assign bgeu = (opcode == 7'b0010011) && (fun3 == 3'b111);
+    assign sra = (opcode == 7'b0110011) && (fun3 == 3'b101) && (fun7 == 7'b0100000);
+    assign srai = (opcode == 7'b0010011) && (fun3 == 3'b101) && (fun7 == 7'b0100000);
+    assign blt = (opcode == 7'b1100011) && (fun3 == 3'b100);
+    assign bltu = (opcode == 7'b0010011) && (fun3 == 3'b110);
+    assign slt = (opcode == 7'b0110011) && (fun3 == 3'b010) && (fun7 == 7'b0000000);
+    assign slti = (opcode == 7'b0010011) && (fun3 == 3'b010) && (fun7 == 7'b0000000);
+    assign mul = (opcode == 7'b0110011) && (fun3 == 3'b000) && (fun7 == 7'b0000001);
+    assign mulh = (opcode == 7'b0110011) && (fun3 == 3'b001) && (fun7 == 7'b0000001);
+    assign div = (opcode == 7'b0110011) && (fun3 == 3'b100) && (fun7 == 7'b0000001);
+    assign divu = (opcode == 7'b0110011) && (fun3 == 3'b101) && (fun7 == 7'b0000001);
+    assign rem = (opcode == 7'b0110011) && (fun3 == 3'b110) && (fun7 == 7'b0000001);
+    assign remu = (opcode == 7'b0110011) && (fun3 == 3'b111) && (fun7 == 7'b0000001);
 
 
-    assign ALUctrl = (sub | sltiu | sltu) ? 6: (sll | slli) ? 3 : (srl | srli) ? 4 : (and_ | andi) ? 0: (or_ | ori) ? 1 : (xor_ | xori) ? 5 : 2;
+    assign ALUctrl = (sub | sltiu | sltu | bge | bgeu | blt | bltu | slt | slti) ? 6: (sll | slli) ? 3 : (srl | srli) ? 4 : (and_ | andi) ? 0: (or_ | ori) ? 1 : (xor_ | xori) ? 5 : 2;
     
 
 endmodule

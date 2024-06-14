@@ -19,3 +19,4 @@ svBit is_ebreak(int inst, int gpr_10)
     }
     else return 0;
 }
+
