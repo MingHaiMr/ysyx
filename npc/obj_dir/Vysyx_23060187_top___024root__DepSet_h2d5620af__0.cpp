@@ -29,6 +29,9 @@ VL_INLINE_OPT void Vysyx_23060187_top___024root___ico_sequent__TOP__0(Vysyx_2306
         [(0x1fU & (vlSelf->inst >> 0xfU))];
     vlSelf->fun3 = (7U & (vlSelf->inst >> 0xcU));
     vlSelf->opcode = (0x7fU & vlSelf->inst);
+    vlSelf->ysyx_23060187_top__DOT__maincontroller__DOT____VdfgTmp_h138b15c4__0 
+        = ((0x33U == (IData)(vlSelf->opcode)) & (0U 
+                                                 == (IData)(vlSelf->fun3)));
     vlSelf->ysyx_23060187_top__DOT__imm = (((3U == (IData)(vlSelf->opcode)) 
                                             | ((0x13U 
                                                 == (IData)(vlSelf->opcode)) 

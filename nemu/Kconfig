@@ -59,7 +59,7 @@ endchoice
 
 choice
   prompt "Build target"
-  default TARGET_SHARE
+  default TARGET_NATIVE_ELF
 config TARGET_NATIVE_ELF
   bool "Executable on Linux Native"
 config TARGET_SHARE
