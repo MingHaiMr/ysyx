@@ -283,12 +283,7 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root__trace_full_sub_0(Vysyx_23060187_
     bufp->fullIData(oldp+14,(((IData)(vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h38f3c40a__0)
                                ? vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h623b28b4__0
                                : 0U)),32);
-    bufp->fullIData(oldp+15,((((IData)(vlSelf->ysyx_23060187_top__DOT__lbu) 
-                               | ((IData)(vlSelf->ysyx_23060187_top__DOT__lw) 
-                                  | ((IData)(vlSelf->ysyx_23060187_top__DOT__lh) 
-                                     | (IData)(vlSelf->ysyx_23060187_top__DOT__lhu))))
-                               ? vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h623b28b4__0
-                               : 0U)),32);
+    bufp->fullIData(oldp+15,(vlSelf->ysyx_23060187_top__DOT__mem_raddr),32);
     bufp->fullIData(oldp+16,(((IData)(vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h38f3c40a__0)
                                ? vlSelf->ysyx_23060187_top__DOT__src2
                                : 0U)),32);

@@ -47,12 +47,7 @@ void Vysyx_23060187_top___024root__trace_chg_sub_0(Vysyx_23060187_top___024root*
         bufp->chgIData(oldp+13,(((IData)(vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h38f3c40a__0)
                                   ? vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h623b28b4__0
                                   : 0U)),32);
-        bufp->chgIData(oldp+14,((((IData)(vlSelf->ysyx_23060187_top__DOT__lbu) 
-                                  | ((IData)(vlSelf->ysyx_23060187_top__DOT__lw) 
-                                     | ((IData)(vlSelf->ysyx_23060187_top__DOT__lh) 
-                                        | (IData)(vlSelf->ysyx_23060187_top__DOT__lhu))))
-                                  ? vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h623b28b4__0
-                                  : 0U)),32);
+        bufp->chgIData(oldp+14,(vlSelf->ysyx_23060187_top__DOT__mem_raddr),32);
         bufp->chgIData(oldp+15,(((IData)(vlSelf->ysyx_23060187_top__DOT____VdfgTmp_h38f3c40a__0)
                                   ? vlSelf->ysyx_23060187_top__DOT__src2
                                   : 0U)),32);

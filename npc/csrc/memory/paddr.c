@@ -12,9 +12,11 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + MEMORY_BASE; }
 extern int pmem_read(int raddr) {
   if(likely(in_pmem(raddr))){
     word_t ret = host_read(guest_to_host(raddr & ~0x3u), 4);
+    //printf("inst: 0x%08x\n", ret);
     return ret;
   }
   else {
+    printf("raddr = 0x%08x\n", raddr);
     printf("error address!\n");
     assert(0);
   }

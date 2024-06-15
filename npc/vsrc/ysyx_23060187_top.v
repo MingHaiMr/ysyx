@@ -91,7 +91,6 @@ module ysyx_23060187_top(
     wire [31:0]mem_wdata;
     wire [31:0]mem_rdata;
     wire [7:0]wmask;
-
     assign valid = 1;
     assign wen = (sb | sw | sh) ? 0 : 1;
     assign mem_wen = (sb) ? 1 : 0;

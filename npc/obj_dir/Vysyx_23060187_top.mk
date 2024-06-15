@@ -40,7 +40,7 @@ VM_USER_CFLAGS = \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
-	-L/usr/lib/x86_64-linux-gnu -lreadline -lncurses \
+	-L/usr/lib/x86_64-linux-gnu -lreadline -lncurses /home/haiming/ysyx/npc/libs/riscv32-nemu-interpreter.so -lpthread -ldl \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \

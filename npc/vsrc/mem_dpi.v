@@ -3,8 +3,18 @@ module mem_dpi(input valid, input wen, input [31:0]raddr1, output reg [31:0]rdat
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
     always @(*) begin
         if(valid) begin
-            rdata1 = pmem_read(raddr1);
-            rdata2 = pmem_read(raddr2);    
+            if(raddr1 != 32'd0) begin
+                rdata1 = pmem_read(raddr1);
+            end
+            else begin
+                rdata1 = 32'd0;
+            end
+            if(raddr2 != 32'd0) begin
+                rdata2 = pmem_read(raddr2);
+            end
+            else begin
+                rdata2 = 32'd0;
+            end    
             if(wen) begin
                 pmem_write(waddr, wdata, wmask);
             end

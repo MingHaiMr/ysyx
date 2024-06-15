@@ -72,12 +72,14 @@ void restart()
 
 void excute_once()
 {
+    //printf("pc: %08x rst: %d clk: %d\n", top->pc, top->rst, top->clk);
     contextp->timeInc(1);
     clk_eval();
     restart();
     if(top->clk == 1)
     {
-        printf("pc: %08x\n", top->pc);
+        printf("pc: 0x%08x\n", top->pc);
+        printf("inst: %08x\n", top->rootp->ysyx_23060187_top__DOT__instruction);
     }
     dump_wave();
 }

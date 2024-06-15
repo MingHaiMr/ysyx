@@ -81,6 +81,7 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
         IData/*31:0*/ ysyx_23060187_top__DOT__instruction;
     };
     struct {
+        IData/*31:0*/ ysyx_23060187_top__DOT__mem_raddr;
         IData/*31:0*/ ysyx_23060187_top__DOT__mem_rdata;
         IData/*31:0*/ ysyx_23060187_top__DOT____VdfgTmp_h6f5c706d__0;
         IData/*31:0*/ ysyx_23060187_top__DOT____VdfgTmp_h623b28b4__0;

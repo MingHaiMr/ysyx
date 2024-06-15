@@ -7,6 +7,7 @@ always @(*) begin
         //$display("EBREAK");
         $finish;
     end else begin
+        //$display("pc : 0x%08x", pc);
         //$display("NOT EBREAK");
     end
 end

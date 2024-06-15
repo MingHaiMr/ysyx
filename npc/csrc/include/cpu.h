@@ -6,7 +6,7 @@
 typedef struct {
     paddr_t pc;
     word_t gpr[32];
-}CPU_STATE;
+}NPC_STATE;
 
 
 #endif
