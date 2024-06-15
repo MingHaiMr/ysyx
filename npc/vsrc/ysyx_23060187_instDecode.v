@@ -6,7 +6,7 @@ module ysyx_23060187_instDecode(
     output [31:0] imm,
     output [6:0] opcode,
     output [2:0] fun3,
-    output fun7
+    output [6:0] fun7
 );
     wire U_type;
     wire I_type;
@@ -18,7 +18,7 @@ module ysyx_23060187_instDecode(
 
     assign opcode = inst[6:0];
     assign fun3 = inst[14:12];
-    assign fun7 = inst[30];
+    assign fun7 = inst[31:25];
     assign rs1 = inst[19:15];
     assign rs2 = inst[24:20];
     assign rd = inst[11:7];

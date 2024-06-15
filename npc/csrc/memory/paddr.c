@@ -12,8 +12,12 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + MEMORY_BASE; }
 extern int pmem_read(int raddr) {
   if(likely(in_pmem(raddr))){
     word_t ret = host_read(guest_to_host(raddr & ~0x3u), 4);
+    return ret;
   }
-  return ret;
+  else {
+    printf("error address!\n");
+    assert(0);
+  }
 }
 
 extern void pmem_write(int waddr, int wdata, char wmask) {
@@ -27,7 +31,7 @@ extern void pmem_write(int waddr, int wdata, char wmask) {
       {
         for(int j = 0; j < 8; j ++)
         {
-          write_select = write_select | (word_t)(1 << (i * 8 + j)); 
+          write_select = write_select | (word_t)(0x80000000 >> (i * 8 + j)); 
         }
       }
       mask >>= 1;

@@ -1,16 +1,13 @@
 module ysyx_23060187_top(
     input clk,
     input rst,
-    output reg [31:0] pc,
-    output [31:0] result,
-    output [6:0] opcode,
-    output [2:0] fun3,
-    output fun7,
-    output [31:0] unusedata,
-    output [4:0] rs2
+    output reg [31:0] pc
 );
 
-    //wire [6:0] opcode;
+    wire [6:0] opcode;
+    wire [2:0] fun3;
+    wire [6:0] fun7;
+    wire [31:0] result;
     wire [4:0] rs1;
     wire [4:0] rs2;
     wire [31:0] wdata;
@@ -61,10 +58,18 @@ module ysyx_23060187_top(
     wire divu;
     wire rem;
     wire remu;
+    wire lbu;
+    wire sb;
+    wire sw;
+    wire lw;
+    wire sh;
+    wire lh;
+    wire lhu;
 
     wire isjump;
-
-    wire [31:0]inst;
+    /* verilator lint_off UNOPTFLAT */
+    wire [31:0]instruction;
+    /* verilator lint_off UNOPTFLAT */
     wire [4:0]imm_4_0;
     wire [31:0]shift_res;
     wire [31:0]sra_mask;
@@ -82,28 +87,36 @@ module ysyx_23060187_top(
     wire valid;
     wire mem_wen;
     wire [31:0]mem_waddr;
-    wire [31:0]mem_data;
+    wire [31:0]mem_raddr;
+    wire [31:0]mem_wdata;
+    wire [31:0]mem_rdata;
     wire [7:0]wmask;
 
     assign valid = 1;
-    assign wen = 1;
+    assign wen = (sb | sw | sh) ? 0 : 1;
+    assign mem_wen = (sb) ? 1 : 0;
     assign opnumber1 = (auipc | jal | jalr) ? pc : src1;
     assign opnumber2 = (addi | auipc | sltiu | andi | ori | xori | slti) ? imm : 
                        (add | sltu | bne | beq | sll | srl | and_ | or_ | xor_ | bge | bgeu | blt | slt) ? src2 : 
-                       (srli | slli) ? imm_4_0 : 32'd4;
+                       (srli | slli) ? {{27{1'b0}}, imm_4_0} : 32'd4;
     assign wdata = lui ? imm : 
-                   (slt | slti) ? (opnumber1[31] > opnumber2[31] || result[31] == 1) :
-                   (sltiu | sltu) ? (cout == 1 ? 0 : 1) : 
+                   (slt | slti) ? ((opnumber1[31] > opnumber2[31] || result[31] == 1) ? 32'd1 : 32'd0) :
+                   (sltiu | sltu) ? (cout == 1 ? 32'd0 : 32'd1) : 
                    (sra | srai) ? sra_res : 
                    (mul | mulh) ? prod : 
                    (div | divu) ? div_res : 
-                   (rem | remu) ? rem_res : result;
+                   (rem | remu) ? rem_res : 
+                   (lbu) ? {24'b0, mem_rdata[7:0]} :
+                   (lw) ? mem_rdata :
+                   (lh) ? {{16{mem_rdata[15]}}, mem_rdata[15:0]} :
+                   (lhu) ? {16'b0, mem_rdata[15:0]} :
+                   result;
     assign isjump = ((bne || beq) && (opnumber1 == opnumber2)) || ((bge || blt) && (opnumber1[31] > opnumber2[31] || result[31] == 1)) || ((bgeu || bltu) && cout == 0);
     assign imm_4_0 = imm[4:0];
     assign shift_amt = sra ? src2[4:0] : imm_4_0;
     assign shift_res = src1 >> shift_amt;
     assign sra_mask = ~(32'hffffffff >> shift_amt);
-    assign sra_res = ({32{src[31]}} & sra_mask) | shift_res;
+    assign sra_res = ({32{src1[31]}} & sra_mask) | shift_res;
     assign unsigned_prod = mul ? (src1 * src2) : 0;
     assign signed_prod = mulh ? ($signed(src1) * $signed(src2)) : 0;
     assign prod = mul ? unsigned_prod[31:0] : mulh ? signed_prod[63:32] : 0; 
@@ -113,16 +126,22 @@ module ysyx_23060187_top(
     assign unsigned_rem_res = remu ? (src1 % src2) : 0;
     assign signed_rem_res = rem ? ($unsigned(src1) % $unsigned(src2)) : 0;
     assign rem_res = remu ? unsigned_rem_res : rem ? signed_rem_res : 0;
+    assign mem_raddr = (lbu | lw | lh | lhu) ? (src1 + imm) : 0;
+    assign mem_waddr = (sb | sw | sh) ? (src1 + imm) : 0;
+    assign mem_wdata = (sb | sw | sh) ? src2 : 0;
+    assign wmask = (sb) ? 8'h1 : 
+                   (sw) ? 8'h15 : 
+                   (sh) ? 8'h3 : 0;
 
     ysyx_23060187_instDecode decode(
-        .inst(inst[31:0]), 
+        .inst(instruction[31:0]), 
         .rs1(rs1[4:0]), 
         .rs2(rs2[4:0]), 
         .rd(rd[4:0]), 
         .imm(imm[31:0]), 
         .opcode(opcode[6:0]), 
         .fun3(fun3[2:0]), 
-        .fun7(fun7)
+        .fun7(fun7[6:0])
     );
 
     ysyx_23060187_registerFile register1(.clk(clk), 
@@ -160,21 +179,24 @@ module ysyx_23060187_top(
         .pc_out(pc[31:0])
     );
 
-    ebreak_dpi dpi1(.inst(inst[31:0]), 
+    ebreak_dpi dpi1(.inst(instruction[31:0]), 
         .gpr10(gpr10[31:0]), 
         .pc(pc[31:0])
     );
 
     mem_dpi dpi2(.valid(valid),
         .wen(mem_wen),
-        .raddr(pc[31:0]),
-        .rdata(inst[31:0]),
+        .raddr1(pc[31:0]),
+        .rdata1(instruction[31:0]),
+        .raddr2(mem_raddr[31:0]),
+        .rdata2(mem_rdata[31:0]),
         .waddr(mem_waddr),
-        .wdata(mem_data[31:0]),
+        .wdata(mem_wdata[31:0]),
         .wmask(wmask[7:0])
     );
 
     ysyx_23060187_maincontroller maincontroller(.fun3(fun3[2:0]), 
+        .fun7(fun7[6:0]),
         .opcode(opcode[6:0]), 
         .ALUctrl(ALUctrl[3:0]), 
         .addi(addi), 
@@ -211,7 +233,14 @@ module ysyx_23060187_top(
         .div(div),
         .divu(divu),
         .rem(rem),
-        .remu(remu)
+        .remu(remu),
+        .lbu(lbu),
+        .sb(sb),
+        .sw(sw),
+        .lw(lw),
+        .sh(sh),
+        .lh(lh),
+        .lhu(lhu)
     );
     
     

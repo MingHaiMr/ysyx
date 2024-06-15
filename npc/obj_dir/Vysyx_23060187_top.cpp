@@ -14,14 +14,7 @@ Vysyx_23060187_top::Vysyx_23060187_top(VerilatedContext* _vcontextp__, const cha
     , vlSymsp{new Vysyx_23060187_top__Syms(contextp(), _vcname__, this)}
     , clk{vlSymsp->TOP.clk}
     , rst{vlSymsp->TOP.rst}
-    , opcode{vlSymsp->TOP.opcode}
-    , fun3{vlSymsp->TOP.fun3}
-    , fun7{vlSymsp->TOP.fun7}
-    , rs2{vlSymsp->TOP.rs2}
-    , inst{vlSymsp->TOP.inst}
     , pc{vlSymsp->TOP.pc}
-    , result{vlSymsp->TOP.result}
-    , unusedata{vlSymsp->TOP.unusedata}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context

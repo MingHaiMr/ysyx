@@ -15,7 +15,7 @@ module ysyx_23060187_ALU(
             3: begin result = opnum1 << opnum2; cout = 0; end
             4: begin result = opnum1 >> opnum2; cout = 0; end
             5: begin result = opnum1 ^ opnum2; cout = 0; end
-            6: {cout, result} = opnum1 + ~opnum2 + 1;
+            6: {cout, result} = opnum1 + opnum2 ^ 32'hffffffff + 1;
             default: result = 0;
         endcase
     end

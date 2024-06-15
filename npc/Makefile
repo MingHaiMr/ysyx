@@ -24,7 +24,7 @@ C_FILE += $(shell find ./csrc -name "*.cpp" -o -name "*.c")
 compile:
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "runing simulation for test module "
-	$(VERILATOR) $(C_F) $(VERI_F) $(C_FILE) $(V_FILE) --LDFLAGS "$(LDFLAGS)"
+	$(VERILATOR) --report-unoptflat $(C_F) $(VERI_F) $(C_FILE) $(V_FILE) --LDFLAGS "$(LDFLAGS)"
 run: compile                  
 	$(call git_commit, "sim NPC")
 	$(NPC_EXEC) $(RUNFLAGS)

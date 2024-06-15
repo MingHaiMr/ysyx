@@ -3,6 +3,7 @@
 
 #include <verilated.h>
 #include <verilated_vcd_c.h>
+#include "Vysyx_23060187_top__Dpi.h"
 
 #include "cpu.h"
 #include "common.h"
@@ -64,7 +65,6 @@ void restart()
         }
         if(top->clk == 1)
         {
-            top->inst = inst_fetch(&top->pc, 4);
             top->eval();
         }
     }
@@ -78,7 +78,6 @@ void excute_once()
     if(top->clk == 1)
     {
         printf("pc: %08x\n", top->pc);
-        printf("inst: %08x\n", top->inst);
     }
     dump_wave();
 }
@@ -190,7 +189,7 @@ static int cmd_x(char *args)
     //printf("%d",n);
     for(i=0;i<n;i++)
     {
-        paddr_t data=paddr_read(addr+i*4,4);
+        paddr_t data=pmem_read(addr+i*4);
         printf("0x%08x\n",data);
     }
     return 0;

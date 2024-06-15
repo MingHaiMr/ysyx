@@ -30,12 +30,21 @@ module ysyx_23060187_maincontroller(
     output srai,
     output blt,
     output bltu,
+    output slt,
+    output slti,
     output mul,
     output mulh,
     output div,
     output divu,
     output rem,
-    output remu
+    output remu,
+    output lbu,
+    output sb,
+    output sw,
+    output lw,
+    output sh,
+    output lh,
+    output lhu
 );
 
     assign auipc = (opcode == 7'b0010111);
@@ -73,7 +82,13 @@ module ysyx_23060187_maincontroller(
     assign divu = (opcode == 7'b0110011) && (fun3 == 3'b101) && (fun7 == 7'b0000001);
     assign rem = (opcode == 7'b0110011) && (fun3 == 3'b110) && (fun7 == 7'b0000001);
     assign remu = (opcode == 7'b0110011) && (fun3 == 3'b111) && (fun7 == 7'b0000001);
-
+    assign lbu = (opcode == 7'b0000011) && (fun3 == 3'b100);
+    assign sb = (opcode == 7'b0100011) && (fun3 == 3'b000);
+    assign sw = (opcode == 7'b0100011) && (fun3 == 3'b010);
+    assign lw = (opcode == 7'b0000011) && (fun3 == 3'b010);
+    assign sh = (opcode == 7'b0100011) && (fun3 == 3'b001);
+    assign lh = (opcode == 7'b0000011) && (fun3 == 3'b001);
+    assign lhu = (opcode == 7'b0000011) && (fun3 == 3'b101);
 
     assign ALUctrl = (sub | sltiu | sltu | bge | bgeu | blt | bltu | slt | slti) ? 6: (sll | slli) ? 3 : (srl | srli) ? 4 : (and_ | andi) ? 0: (or_ | ori) ? 1 : (xor_ | xori) ? 5 : 2;
     
