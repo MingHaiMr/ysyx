@@ -35,7 +35,6 @@ typedef uint16_t ioaddr_t;
 #define PG_ALIGN __attribute__((aligned(4096))) 
 #define CONFIG_TARGET_NATIVE_ELF 1
 #define CONFIG_DIFFTEST 
-#define DIFFTEST_TO_REF 1
 
 #define ADDI    0b00000000001000000000000100010011 //imm:0x2 rs1:0x0 rd:0x2 R(rd)=R(rs1)+imm
 #define EBREAK  0b00000000000100000000000001110011

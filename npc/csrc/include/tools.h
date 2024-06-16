@@ -12,6 +12,7 @@
 #include "paddr.h"
 #include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
 #include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top___024root.h>
+#include <dlfcn.h>
 #endif
 
 
@@ -20,6 +21,27 @@ VerilatedContext *contextp=NULL;
 VerilatedVcdC* tfp=NULL;
 static Vysyx_23060187_top* top;
 
+
+enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
+typedef struct {
+  int state;
+  vaddr_t halt_pc;
+  uint32_t halt_ret;
+} NPCState;
+NPCState npc_state;
+
+typedef struct {
+    paddr_t pc;
+    word_t gpr[32];
+}NPCREG;
+NPCREG npc_reg;
+
+void difftest_step(vaddr_t pc, vaddr_t npc);
+void init_difftest(char *ref_so_file, long img_size, int port);
+void checkregs(NPCREG *ref, vaddr_t pc);
+bool isa_difftest_checkregs(NPCREG *ref_r, vaddr_t pc);
+void difftest_skip_ref();
+void difftest_skip_dut(int nr_ref, int nr_dut);
 
 void sim_init()
 {
@@ -76,11 +98,17 @@ void excute_once()
     contextp->timeInc(1);
     clk_eval();
     restart();
+    for(int i = 0; i < 32; i ++)
+    {
+      npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
+    }
+    npc_reg.pc = top->pc;
     if(top->clk == 1)
     {
         printf("pc: 0x%08x\n", top->pc);
         printf("inst: %08x\n", top->rootp->ysyx_23060187_top__DOT__instruction);
     }
+    difftest_step(npc_reg.pc, npc_reg.pc);
     dump_wave();
 }
 
@@ -313,6 +341,116 @@ void sdb_main_loop() {
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
+}
+#endif
+
+#ifdef CONFIG_DIFFTEST
+
+enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
+
+typedef void (*ref_difftest_memcpy_t)(paddr_t addr, void *buf, size_t n, bool direction);
+typedef void (*ref_difftest_regcpy_t)(void *dut, bool direction);
+typedef void (*ref_difftest_exec_t)(uint64_t n);
+typedef void (*ref_difftest_raise_intr_t)(uint64_t NO);
+typedef void (*ref_difftest_init_t)(int port);
+ref_difftest_memcpy_t ref_difftest_memcpy; 
+ref_difftest_regcpy_t ref_difftest_regcpy;
+ref_difftest_exec_t ref_difftest_exec;
+ref_difftest_raise_intr_t ref_difftest_raise_intr;
+ref_difftest_init_t ref_difftest_init;
+
+void init_difftest(char *ref_so_file, long img_size, int port) {
+  assert(ref_so_file != NULL);
+
+  void *handle;
+  handle = dlopen(ref_so_file, RTLD_LAZY);
+  assert(handle);
+
+  ref_difftest_memcpy = (ref_difftest_memcpy_t)dlsym(handle, "difftest_memcpy");
+  assert(ref_difftest_memcpy);
+
+  ref_difftest_regcpy = (ref_difftest_regcpy_t)dlsym(handle, "difftest_regcpy");
+  assert(ref_difftest_regcpy);
+
+  ref_difftest_exec = (ref_difftest_exec_t)dlsym(handle, "difftest_exec");
+  assert(ref_difftest_exec);
+
+  ref_difftest_raise_intr = (ref_difftest_raise_intr_t)dlsym(handle, "difftest_raise_intr");
+  assert(ref_difftest_raise_intr);
+
+  ref_difftest_init = (ref_difftest_init_t)dlsym(handle, "difftest_init");
+  assert(ref_difftest_init);
+
+  printf("Differential testing: %s", ANSI_FMT("ON", ANSI_FG_GREEN));
+  printf("The result of every instruction will be compared with %s. "
+      "This will help you a lot for debugging, but also significantly reduce the performance. "
+      , ref_so_file);
+
+  ref_difftest_init(port);
+  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&npc_reg, DIFFTEST_TO_REF);
+}
+
+void checkregs(NPCREG *ref, vaddr_t pc) {
+  if (!isa_difftest_checkregs(ref, pc)) {
+    npc_state.state = NPC_ABORT;
+    npc_state.halt_pc = pc;
+    isa_reg_display();
+  }
+}
+
+bool isa_difftest_checkregs(NPCREG *ref_r, vaddr_t pc)
+{
+    bool diff = false;
+    for (int i = 0; i < 32; i ++) {
+        if (npc_reg.gpr[i] != ref_r->gpr[i]) {
+            diff = true;
+        }
+    }
+    return !diff;
+}
+
+static bool is_skip_ref = false;
+static int skip_dut_nr_inst = 1;
+
+void difftest_skip_ref() {
+  is_skip_ref = true;
+  skip_dut_nr_inst = 0;
+}
+
+void difftest_skip_dut(int nr_ref, int nr_dut) {
+  skip_dut_nr_inst += nr_dut;
+  while (nr_ref -- > 0) {
+    ref_difftest_exec(1);
+  }
+}
+
+void difftest_step(vaddr_t pc, vaddr_t npc) {
+  NPCREG ref_r;
+
+  if (skip_dut_nr_inst > 0) {
+    ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+    if (ref_r.pc == npc) {
+      skip_dut_nr_inst = 0;
+      checkregs(&ref_r, npc);
+      return;
+    }
+    skip_dut_nr_inst --;
+    if (skip_dut_nr_inst == 0)
+      printf("can not catch up with ref.pc = 0x%08x at pc = 0x%08x", ref_r.pc, pc);
+    return;
+  }
+
+  if (is_skip_ref) {
+    // to skip the checking of an instruction, just copy the reg state to reference design
+    ref_difftest_regcpy(&npc_reg, DIFFTEST_TO_REF);
+    is_skip_ref = false;
+    return;
+  }
+
+  ref_difftest_exec(1);
+  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+  checkregs(&ref_r, pc);
 }
 #endif
 

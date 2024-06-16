@@ -9,52 +9,14 @@
 char *img_file = NULL;
 char *log_file = NULL;
 char *diff_so_file = NULL;
-void parse_args(int argc, char *argv[]);
+void parse_args(char *img_file_path);
 void load_img();
-void init_monitor(int argc, char *argv[]) {
+void init_monitor(char *img_file_path) {
   /* Initialize the monitor. */
   printf("Initializing the monitor...\n");
-  parse_args(argc, argv);
+  img_file = img_file_path;
   printf("Loading images...\n");
   load_img();
-}
-
-
-
-void parse_args(int argc, char *argv[]) {
-  /* Parse the arguments. */
-    printf("Parsing the arguments...\n");
-    printf("%s\n", argv[1]);
-    const struct option table[] = {
-        {"batch", no_argument, NULL, 'b'},
-        {"log", required_argument, NULL, 'l'},
-        {"diff", required_argument, NULL, 'd'},
-        {"img", required_argument, NULL, 'i'},
-        {"help", no_argument, NULL, 'h'},
-        {0, 0, NULL, 0},
-    };
-    int o;
-    while(o = getopt_long(argc, argv, "bl:d:i:h", table, NULL) != -1) {
-        
-        switch(o) {
-            case 'b': break;//sdb_set_batch_mode(); break;
-            case 'l': assert(optarg != NULL); log_file = optarg; break;
-            case 'd': assert(optarg != NULL); diff_so_file = optarg; break;
-            case 'i': assert(optarg != NULL); img_file = optarg; break;
-            case 'h': break;
-            default:
-                img_file = optarg;
-                //printf("o: %c\n", o);
-                //printf("Usage: %s [OPTION...] IMAGE [args]\n", argv[0]);
-                //printf("\t-b,--batch              run with batch mode\n");
-                //printf("\t-l,--log=FILE           output log to FILE\n");
-                //printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
-                //printf("\t-i,--img=IMG            load IMG to memory\n");
-                //printf("\n");
-                break;
-        }
-    }
-    return;
 }
 
 

@@ -8,8 +8,7 @@
 #include "paddr.h"
 #include <string.h>
 
-void init_monitor(int argc, char* argv[]);
-void parse_args(int argc, char* argv[]);
+void init_monitor(char* path);
 void load_img();
 
 #endif

@@ -1,7 +1,7 @@
 module ysyx_23060187_top(
     input clk,
     input rst,
-    output reg [31:0] pc
+    output [31:0] pc
 );
 
     wire [6:0] opcode;

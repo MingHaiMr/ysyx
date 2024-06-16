@@ -1,2 +1,2 @@
-#include "../include/cpu.h"
-#include <stdio.h>
+#include "cpu.h"
+
