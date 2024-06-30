@@ -1,5 +1,4 @@
 BUILD_DIR = ./build
-export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 VERILATOR=verilator
 VERI_F += --cc --exe --trace --build --top-module ysyx_23060187_top 
 OBJ_DIR = ./obj_dir
@@ -8,16 +7,15 @@ WORK_DIR = $(shell pwd)
 INC_PATH := $(WORK_DIR)/csrc/include $(INC_PATH)
 INCLUDES = $(addprefix -I, $(INC_PATH))
 C_F+= -CFLAGS "$(INCLUDES)"
-LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lreadline -lncurses 
-#/home/haiming/ysyx/npc/libs/riscv32-nemu-interpreter-so -lpthread -ldl
 C_F+= -CFLAGS "-g"
 #C_F+= -CFLAGS "-DCONFIG_VCD_TRACE_COND"
 #C_F+= -CFLAGS "-DCONFIG_DIFF_COND"
 # C_F+= -CFLAGS "-DPTR_EXCUTE"
 #C_F +=  -CFLAGS "-DTARGET_AM"
+export LD_LIBRARY_PATH=/home/haiming/nemu/build/nemu-interpreter
+LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lreadline -lncurses /home/haiming/ysyx/npc/libs/riscv32-nemu-interpreter.so -lpthread -ldl
 IMG ?= ../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
 RUNFLAGS := $(IMG)
-RUNFLAGS += /home/haiming/ysyx/npc/libs/riscv32-nemu-interpreter-so
 NPC_EXEC := ./obj_dir/Vysyx_23060187_top
 
 V_FILE = $(shell find ./vsrc -name "*.v" -o -name "*.sv")
@@ -38,5 +36,3 @@ gtk:sim
 
 clean:
 	rm -rf $(BUILD_DIR) $(OBJ_DIR) dump.vcd
-
-	

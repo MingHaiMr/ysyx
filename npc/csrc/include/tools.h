@@ -108,7 +108,9 @@ void excute_once()
         printf("pc: 0x%08x\n", top->pc);
         printf("inst: %08x\n", top->rootp->ysyx_23060187_top__DOT__instruction);
     }
+    #ifdef CONFIG_DIFFTEST
     difftest_step(npc_reg.pc, npc_reg.pc);
+    #endif
     dump_wave();
 }
 
@@ -411,7 +413,7 @@ bool isa_difftest_checkregs(NPCREG *ref_r, vaddr_t pc)
 }
 
 static bool is_skip_ref = false;
-static int skip_dut_nr_inst = 1;
+static int skip_dut_nr_inst = 0;
 
 void difftest_skip_ref() {
   is_skip_ref = true;

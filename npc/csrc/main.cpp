@@ -13,8 +13,10 @@ int main(int argc, char *argv[])
 {
     sim_init();
     init_monitor(argv[1]);
+    #ifdef CONFIG_DIFFTEST
     long img_size = getFileSize(argv[2]);
     init_difftest(argv[2], img_size, 0);
+    #endif 
     engine_start();
     final();
     return 0;
