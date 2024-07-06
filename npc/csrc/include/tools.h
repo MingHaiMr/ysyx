@@ -10,8 +10,8 @@
 #include "host.h"
 #include "utils.h"
 #include "paddr.h"
-#include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
-#include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top___024root.h>
+#include </home/chengchen/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
+#include </home/chengchen/ysyx/npc/obj_dir/Vysyx_23060187_top___024root.h>
 #include <dlfcn.h>
 #endif
 
@@ -362,8 +362,8 @@ ref_difftest_raise_intr_t ref_difftest_raise_intr;
 ref_difftest_init_t ref_difftest_init;
 
 void init_difftest(char *ref_so_file, long img_size, int port) {
-  assert(ref_so_file != NULL);
-
+  assert(ref_so_file);
+  printf("ref_so_file exists!");
   void *handle;
   handle = dlopen(ref_so_file, RTLD_LAZY);
   assert(handle);

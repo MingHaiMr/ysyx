@@ -11,10 +11,11 @@ const char *ref_so_file = NULL;
 long getFileSize(const char *filePath);
 int main(int argc, char *argv[])
 {
+    printf("%s",*argv);
     sim_init();
     init_monitor(argv[1]);
     #ifdef CONFIG_DIFFTEST
-    long img_size = getFileSize(argv[2]);
+    long img_size = getFileSize(argv[1]);
     init_difftest(argv[2], img_size, 0);
     #endif 
     engine_start();

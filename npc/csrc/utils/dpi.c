@@ -1,6 +1,6 @@
 #include "../include/common.h"
 #include "svdpi.h"
-#include </home/haiming/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
+#include </home/chengchen/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
 #include "Vysyx_23060187_top__Dpi.h"
 
 extern svBit is_ebreak(int inst);
