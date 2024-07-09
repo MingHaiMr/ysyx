@@ -109,7 +109,10 @@ void excute_once()
         printf("inst: %08x\n", top->rootp->ysyx_23060187_top__DOT__instruction);
     }
     #ifdef CONFIG_DIFFTEST
-    difftest_step(npc_reg.pc, npc_reg.pc);
+    if(npc_reg.pc != 0x00000000)
+    {
+      difftest_step(npc_reg.pc, npc_reg.pc);
+    }
     #endif
     dump_wave();
 }
