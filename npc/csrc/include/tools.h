@@ -31,8 +31,8 @@ typedef struct {
 NPCState npc_state;
 
 typedef struct {
-    paddr_t pc;
     word_t gpr[32];
+    paddr_t pc;
 }NPCREG;
 NPCREG npc_reg;
 
@@ -42,6 +42,8 @@ void checkregs(NPCREG *ref, vaddr_t pc);
 bool isa_difftest_checkregs(NPCREG *ref_r, vaddr_t pc);
 void difftest_skip_ref();
 void difftest_skip_dut(int nr_ref, int nr_dut);
+bool difftest_initial = false;
+long getFileSize(const char *filePath);
 
 void sim_init()
 {
@@ -109,12 +111,31 @@ void excute_once()
         printf("inst: %08x\n", top->rootp->ysyx_23060187_top__DOT__instruction);
     }
     #ifdef CONFIG_DIFFTEST
+    char *ref_so_file_path = "/home/chengchen/ysyx/nemu/build/riscv32-nemu-interpreter-so";
     if(npc_reg.pc != 0x00000000)
     {
+      if(difftest_initial == false)
+      {
+        init_difftest(ref_so_file_path, getFileSize("/home/chengchen/ysyx/am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin"), 0);
+        printf("difftest init!\n");
+        difftest_initial = true;
+      }
       difftest_step(npc_reg.pc, npc_reg.pc);
     }
     #endif
     dump_wave();
+}
+
+long getFileSize(const char *filePath) {
+    FILE *file = fopen(filePath, "rb");
+    if (file == NULL) {
+        perror("Failed to open file");
+        return -1;  
+    }
+    fseek(file, 0, SEEK_END); 
+    long size = ftell(file);   
+    fclose(file); 
+    return size;
 }
 
 void excute(uint32_t cycles)
@@ -367,7 +388,7 @@ ref_difftest_init_t ref_difftest_init;
 void init_difftest(char *ref_so_file, long img_size, int port) {
   assert(ref_so_file);
   printf("ref_so_file exists!");
-  void *handle;
+  void *handle; 
   handle = dlopen(ref_so_file, RTLD_LAZY);
   assert(handle);
 
@@ -392,8 +413,11 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
       , ref_so_file);
 
   ref_difftest_init(port);
-  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
+  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_DUT);
+  printf("memory copy!\n");
+  printf("npc_reg.pc = 0x%08x\n", npc_reg.pc);
   ref_difftest_regcpy(&npc_reg, DIFFTEST_TO_REF);
+  printf("reg copy!\n");
 }
 
 void checkregs(NPCREG *ref, vaddr_t pc) {
