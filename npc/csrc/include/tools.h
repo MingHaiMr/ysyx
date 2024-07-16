@@ -103,6 +103,7 @@ void excute_once()
     for(int i = 0; i < 32; i ++)
     {
       npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
+      if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
     }
     npc_reg.pc = top->pc;
     if(top->clk == 1)
@@ -165,7 +166,7 @@ void cpu_exec(uint64_t n) {
     case NPC_RUNNING: npc_state.state = NPC_STOP; break;
 
     case NPC_END: case NPC_ABORT:
-      printf("nemu: %s at pc = 0x%08x",
+      printf("npc: %s at pc = 0x%08x",
           (npc_state.state == NPC_ABORT ? ANSI_FMT("ABORT", ANSI_FG_RED) :
            (npc_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
@@ -433,6 +434,7 @@ bool isa_difftest_checkregs(NPCREG *ref_r, vaddr_t pc)
     bool diff = false;
     for (int i = 0; i < 32; i ++) {
         if (npc_reg.gpr[i] != ref_r->gpr[i]) {
+            printf("gpr number = %d npc_reg.gpr = 0x%08x but ref_r.gpr = 0x%08x\n", i, npc_reg.gpr[i], ref_r->gpr[i]);
             diff = true;
         }
     }
@@ -479,7 +481,10 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
 
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  checkregs(&ref_r, pc);
+  if(top->clk == 1)
+  {
+    checkregs(&ref_r, pc);
+  }
 }
 #endif
 

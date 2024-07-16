@@ -131,5 +131,6 @@ static int decode_exec(Decode *s) {
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
   IFDEF(CONFIG_ITRACE,irbuf_push(s->pc, s->isa.inst.val));
+  printf("s->isa.inst.val = 0x%08x\n", s->isa.inst.val);
   return decode_exec(s);
 }
