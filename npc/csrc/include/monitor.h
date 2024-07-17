@@ -9,7 +9,7 @@
 #include <string.h>
 
 void init_monitor(char* path);
-void load_img();
+void load_img(char *path);
 
 #endif
 

@@ -16,12 +16,13 @@ void init_monitor(char *img_file_path) {
   printf("Initializing the monitor...\n");
   img_file = img_file_path;
   printf("Loading images...\n");
-  load_img();
+  load_img(img_file_path);
 }
 
 
-void load_img()
+void load_img(char *img_file_path)
 {
+    img_file = img_file_path;
     /* Load the image to memory. */
     printf("Loading the image to memory...\n");
     if(img_file == NULL)
