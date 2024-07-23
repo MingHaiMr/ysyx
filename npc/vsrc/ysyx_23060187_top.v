@@ -1,7 +1,8 @@
 module ysyx_23060187_top(
     input clk,
     input rst,
-    output [31:0] pc
+    output [31:0] pc,
+    output [31:0] reg_t0
 );
 
     wire [6:0] opcode;
@@ -91,6 +92,8 @@ module ysyx_23060187_top(
     wire [31:0]mem_wdata;
     wire [31:0]mem_rdata;
     wire [7:0]wmask;
+    wire [31:0]t0;
+    assign reg_t0 = t0;
     assign valid = 1;
     assign wen = (sb | sw | sh) ? 0 : 1;
     assign mem_wen = (sb) ? 1 : 0;
@@ -151,7 +154,8 @@ module ysyx_23060187_top(
         .rdata1(src1[31:0]),
         .raddr2(rs2[4:0]),
         .rdata2(src2[31:0]), 
-        .GPR10(gpr10[31:0])
+        .GPR10(gpr10[31:0]),
+        .t0(t0[31:0])
     );
 
     ysyx_23060187_ALU alu(.ALUctrl(ALUctrl[3:0]), 

@@ -22,10 +22,10 @@ VerilatedVcdC* tfp=NULL;
 static Vysyx_23060187_top* top;
 
 const char *regs[] = {
-  "$0", "ra", "tp", "sp", "a0", "a1", "a2", "a3",
-  "a4", "a5", "a6", "a7", "t0", "t1", "t2", "t3",
-  "t4", "t5", "t6", "t7", "t8", "rs", "fp", "s0",
-  "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"
+  "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
 typedef struct {
@@ -103,8 +103,10 @@ void restart()
             for(int i = 0; i < 32; i ++)
             {
               npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
-              if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
+              //if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
             }
+            printf("$reg0 is 0x%08x\n", top->reg_t0);
+            //printf("opnum1 = 0x%08x opnum2 = 0x%08x rd = 0x%08x\n", top->op1, top->op2, top->rd_display);
         }
     }
 }

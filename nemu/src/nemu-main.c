@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 void test_expr()
   /* Test generated expressions. */
 {
-  FILE* fp = fopen("/home/haiming/Desktop/ysyx-workbench/nemu/tools/gen-expr/input.txt","r");
+  FILE* fp = fopen("/home/chengchen/Desktop/ysyx/nemu/tools/gen-expr/input.txt","r");
   uint32_t result,expr_result;
   char expression[2048]={'\0'};
   bool test_success;

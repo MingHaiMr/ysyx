@@ -86,6 +86,15 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root___stl_sequent__TOP__0(Vysyx_23060
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___stl_sequent__TOP__0\n"); );
     // Body
+    vlSelf->reg_t0 = vlSelf->ysyx_23060187_top__DOT__register1__DOT__rf
+        [0U];
+}
+
+VL_ATTR_COLD void Vysyx_23060187_top___024root___stl_sequent__TOP__1(Vysyx_23060187_top___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___stl_sequent__TOP__1\n"); );
+    // Body
     vlSelf->ysyx_23060187_top__DOT__lbu = (IData)((0x4003U 
                                                    == 
                                                    (0x707fU 
@@ -522,8 +531,11 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root___eval_stl(Vysyx_23060187_top___0
     Vysyx_23060187_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_23060187_top___024root___eval_stl\n"); );
     // Body
-    if (vlSelf->__VstlTriggered.at(1U)) {
+    if (vlSelf->__VstlTriggered.at(0U)) {
         Vysyx_23060187_top___024root___stl_sequent__TOP__0(vlSelf);
+    }
+    if (vlSelf->__VstlTriggered.at(1U)) {
+        Vysyx_23060187_top___024root___stl_sequent__TOP__1(vlSelf);
         vlSelf->__Vm_traceActivity[4U] = 1U;
         vlSelf->__Vm_traceActivity[3U] = 1U;
         vlSelf->__Vm_traceActivity[2U] = 1U;
@@ -590,6 +602,7 @@ VL_ATTR_COLD void Vysyx_23060187_top___024root___ctor_var_reset(Vysyx_23060187_t
     vlSelf->clk = VL_RAND_RESET_I(1);
     vlSelf->rst = VL_RAND_RESET_I(1);
     vlSelf->pc = VL_RAND_RESET_I(32);
+    vlSelf->reg_t0 = VL_RAND_RESET_I(32);
     vlSelf->ysyx_23060187_top__DOT__result = VL_RAND_RESET_I(32);
     vlSelf->ysyx_23060187_top__DOT__imm = VL_RAND_RESET_I(32);
     vlSelf->ysyx_23060187_top__DOT__src1 = VL_RAND_RESET_I(32);

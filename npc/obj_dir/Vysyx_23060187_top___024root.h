@@ -72,15 +72,16 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
         CData/*0:0*/ __VactDidInit;
         CData/*0:0*/ __VactContinue;
         VL_OUT(pc,31,0);
+        VL_OUT(reg_t0,31,0);
         IData/*31:0*/ ysyx_23060187_top__DOT__result;
         IData/*31:0*/ ysyx_23060187_top__DOT__imm;
         IData/*31:0*/ ysyx_23060187_top__DOT__src1;
         IData/*31:0*/ ysyx_23060187_top__DOT__src2;
         IData/*31:0*/ ysyx_23060187_top__DOT__opnumber1;
         IData/*31:0*/ ysyx_23060187_top__DOT__opnumber2;
-        IData/*31:0*/ ysyx_23060187_top__DOT__instruction;
     };
     struct {
+        IData/*31:0*/ ysyx_23060187_top__DOT__instruction;
         IData/*31:0*/ ysyx_23060187_top__DOT__mem_raddr;
         IData/*31:0*/ ysyx_23060187_top__DOT__mem_rdata;
         IData/*31:0*/ ysyx_23060187_top__DOT____VdfgTmp_h6f5860e0__0;
