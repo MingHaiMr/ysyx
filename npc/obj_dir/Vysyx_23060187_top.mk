@@ -35,12 +35,12 @@ VM_PREFIX = Vysyx_23060187_top
 VM_MODPREFIX = Vysyx_23060187_top
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-I/home/chengchen/ysyx/npc/csrc/include \
+	-I/home/chengchen/Desktop/ysyx/npc/csrc/include \
 	-g \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
-	-L/usr/lib/x86_64-linux-gnu -lreadline -lncurses /home/chengchen/ysyx/nemu/build/riscv32-nemu-interpreter-so -lpthread -ldl \
+	-L/usr/lib/x86_64-linux-gnu -lreadline -lncurses /home/chengchen/Desktop/ysyx/nemu/build/riscv32-nemu-interpreter-so -lpthread -ldl \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \

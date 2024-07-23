@@ -14,7 +14,7 @@
 ***************************************************************************************/
 
 #include <common.h>
-#include </home/chengchen/ysyx/nemu/src/monitor/sdb/sdb.h>
+#include </home/chengchen/Desktop/ysyx/nemu/src/monitor/sdb/sdb.h>
 void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();

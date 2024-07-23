@@ -23,8 +23,10 @@ void init_monitor(char *img_file_path) {
 void load_img(char *img_file_path)
 {
     img_file = img_file_path;
+    printf("img path: %s\n", img_file_path);
     /* Load the image to memory. */
     printf("Loading the image to memory...\n");
+    //img_file = NULL;
     if(img_file == NULL)
     {
         printf("No image file specified, use built in image.\n");

@@ -10,8 +10,8 @@
 #include "host.h"
 #include "utils.h"
 #include "paddr.h"
-#include </home/chengchen/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
-#include </home/chengchen/ysyx/npc/obj_dir/Vysyx_23060187_top___024root.h>
+#include </home/chengchen/Desktop/ysyx/npc/obj_dir/Vysyx_23060187_top.h>
+#include </home/chengchen/Desktop/ysyx/npc/obj_dir/Vysyx_23060187_top___024root.h>
 #include <dlfcn.h>
 #endif
 
@@ -21,7 +21,12 @@ VerilatedContext *contextp=NULL;
 VerilatedVcdC* tfp=NULL;
 static Vysyx_23060187_top* top;
 
-
+const char *regs[] = {
+  "$0", "ra", "tp", "sp", "a0", "a1", "a2", "a3",
+  "a4", "a5", "a6", "a7", "t0", "t1", "t2", "t3",
+  "t4", "t5", "t6", "t7", "t8", "rs", "fp", "s0",
+  "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"
+};
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
 typedef struct {
   int state;
@@ -58,7 +63,12 @@ void sim_init()
 }
 
 void signal_reset()
-{
+{const char *regs[] = {
+  "$0", "ra", "tp", "sp", "a0", "a1", "a2", "a3",
+  "a4", "a5", "a6", "a7", "t0", "t1", "t2", "t3",
+  "t4", "t5", "t6", "t7", "t8", "rs", "fp", "s0",
+  "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"
+};
     top->rst = 1;
     top->clk = !top->clk;
 }
@@ -90,6 +100,11 @@ void restart()
         if(top->clk == 1)
         {
             top->eval();
+            for(int i = 0; i < 32; i ++)
+            {
+              npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
+              if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
+            }
         }
     }
 }
@@ -100,11 +115,6 @@ void excute_once()
     contextp->timeInc(1);
     clk_eval();
     restart();
-    for(int i = 0; i < 32; i ++)
-    {
-      npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
-      if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
-    }
     npc_reg.pc = top->pc;
     if(top->clk == 1)
     {
@@ -112,16 +122,15 @@ void excute_once()
         printf("inst: %08x\n", top->rootp->ysyx_23060187_top__DOT__instruction);
     }
     #ifdef CONFIG_DIFFTEST
-    char *ref_so_file_path = "/home/chengchen/ysyx/nemu/build/riscv32-nemu-interpreter-so";
+    char *ref_so_file_path = "/home/chengchen/Desktop/ysyx/nemu/build/riscv32-nemu-interpreter-so";
     if(npc_reg.pc != 0x00000000)
     {
       if(difftest_initial == false)
       {
-        init_difftest(ref_so_file_path, getFileSize("/home/chengchen/ysyx/am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin"), 0);
+        init_difftest(ref_so_file_path, getFileSize("/home/chengchen/Desktop/ysyx/am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin"), 0);
         printf("difftest init!\n");
         difftest_initial = true;
       }
-      difftest_step(npc_reg.pc, npc_reg.pc);
     }
     #endif
     dump_wave();
@@ -222,11 +231,20 @@ static int cmd_si(char *args)
     if(args == NULL)
     {
         cpu_exec(2);
+        #ifdef CONFIG_DIFFTEST 
+        difftest_step(npc_reg.pc, npc_reg.pc);
+        #endif
     }
     else
     {
         int nums = atoi(args);
-        cpu_exec(2*nums);   
+        cpu_exec(2*nums);
+        #ifdef CONFIG_DIFFTEST 
+        for(int i = 0; i < nums; i++)
+        {
+          difftest_step(npc_reg.pc, npc_reg.pc);
+        }   
+        #endif
     }
     return 0;
 }
@@ -241,7 +259,7 @@ static int cmd_x(char *args)
     paddr_t addr;
     addr=strtol(start,&str,16);
     //printf("%08x\n",addr);
-    //data=paddr_read(addr+4,4);
+    //data=paddr_read(addr+4,4);define
     //printf("%08x\n",data);
     //printf("%d",n);
     for(i=0;i<n;i++)
@@ -266,12 +284,7 @@ static int cmd_info(char *args)
     return 0;
 }
 
-const char *regs[] = {
-  "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
-  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
-  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
-  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
-};
+
 
 void isa_reg_display()
 {
@@ -414,7 +427,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
       , ref_so_file);
 
   ref_difftest_init(port);
-  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_DUT);
+  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
   printf("memory copy!\n");
   printf("npc_reg.pc = 0x%08x\n", npc_reg.pc);
   ref_difftest_regcpy(&npc_reg, DIFFTEST_TO_REF);
@@ -423,7 +436,8 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 void checkregs(NPCREG *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
-    npc_state.state = NPC_ABORT;
+    npc_state.state = NPC_STOP;
+    printf("check regs false!\n");
     npc_state.halt_pc = pc;
     isa_reg_display();
   }
@@ -479,12 +493,12 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
     return;
   }
 
-  ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  if(top->clk == 1)
+  if(top->clk == 1 && top->pc!=0x80000000)
   {
     checkregs(&ref_r, pc);
   }
+  ref_difftest_exec(1);
 }
 #endif
 
