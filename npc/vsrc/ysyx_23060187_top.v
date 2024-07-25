@@ -2,7 +2,9 @@ module ysyx_23060187_top(
     input clk,
     input rst,
     output [31:0] pc,
-    output [31:0] reg_t0
+    output [31:0] reg_a0,
+    output [31:0] reg_a5,
+    output cout_
 );
 
     wire [6:0] opcode;
@@ -92,18 +94,20 @@ module ysyx_23060187_top(
     wire [31:0]mem_wdata;
     wire [31:0]mem_rdata;
     wire [7:0]wmask;
-    wire [31:0]t0;
-    assign reg_t0 = t0;
+    wire [31:0] gpr15;
+    assign reg_a0 = gpr10;
+    assign reg_a5 = gpr15;
+    assign cout_ = cout;
     assign valid = 1;
     assign wen = (sb | sw | sh) ? 0 : 1;
     assign mem_wen = (sb) ? 1 : 0;
     assign opnumber1 = (auipc | jal | jalr) ? pc : src1;
     assign opnumber2 = (addi | auipc | sltiu | andi | ori | xori | slti) ? imm : 
-                       (add | sltu | bne | beq | sll | srl | and_ | or_ | xor_ | bge | bgeu | blt | slt) ? src2 : 
+                       (add | sltu | bne | beq | sll | srl | and_ | or_ | xor_ | bge | bgeu | blt | slt | sub) ? src2 : 
                        (srli | slli) ? {{27{1'b0}}, imm_4_0} : 32'd4;
     assign wdata = lui ? imm : 
                    (slt | slti) ? ((opnumber1[31] > opnumber2[31] || result[31] == 1) ? 32'd1 : 32'd0) :
-                   (sltiu | sltu) ? (cout == 1 ? 32'd0 : 32'd1) : 
+                   (sltiu | sltu) ? ((cout == 1) ? 32'd1 : 32'd0) : 
                    (sra | srai) ? sra_res : 
                    (mul | mulh) ? prod : 
                    (div | divu) ? div_res : 
@@ -134,6 +138,7 @@ module ysyx_23060187_top(
     assign wmask = (sb) ? 8'h1 : 
                    (sw) ? 8'h15 : 
                    (sh) ? 8'h3 : 0;
+    
 
     ysyx_23060187_instDecode decode(
         .inst(instruction[31:0]), 
@@ -155,7 +160,7 @@ module ysyx_23060187_top(
         .raddr2(rs2[4:0]),
         .rdata2(src2[31:0]), 
         .GPR10(gpr10[31:0]),
-        .t0(t0[31:0])
+        .GPR15(gpr15[31:0])
     );
 
     ysyx_23060187_ALU alu(.ALUctrl(ALUctrl[3:0]), 

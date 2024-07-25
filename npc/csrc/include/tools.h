@@ -105,7 +105,7 @@ void restart()
               npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
               //if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
             }
-            printf("$reg0 is 0x%08x\n", top->reg_t0);
+            printf("$a0 is 0x%08x $a5 is 0x%08x cout is %d\n", top->reg_a0, top->reg_a5, top->cout_);
             //printf("opnum1 = 0x%08x opnum2 = 0x%08x rd = 0x%08x\n", top->op1, top->op2, top->rd_display);
         }
     }
@@ -129,7 +129,7 @@ void excute_once()
     {
       if(difftest_initial == false)
       {
-        init_difftest(ref_so_file_path, getFileSize("/home/chengchen/Desktop/ysyx/am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin"), 0);
+        init_difftest(ref_so_file_path, getFileSize("/home/chengchen/Desktop/ysyx/am-kernels/tests/cpu-tests/build/add-riscv32-nemu.bin"), 0);
         printf("difftest init!\n");
         difftest_initial = true;
       }
@@ -240,10 +240,10 @@ static int cmd_si(char *args)
     else
     {
         int nums = atoi(args);
-        cpu_exec(2*nums);
         #ifdef CONFIG_DIFFTEST 
         for(int i = 0; i < nums; i++)
         {
+          cpu_exec(2);
           difftest_step(npc_reg.pc, npc_reg.pc);
         }   
         #endif
@@ -496,11 +496,12 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
   }
 
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  if(top->clk == 1 && top->pc!=0x80000000)
+  ref_difftest_exec(1);
+  if(top->clk == 1)
   {
     checkregs(&ref_r, pc);
   }
-  ref_difftest_exec(1);
+  
 }
 #endif
 

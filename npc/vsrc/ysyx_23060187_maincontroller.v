@@ -90,7 +90,11 @@ module ysyx_23060187_maincontroller(
     assign lh = (opcode == 7'b0000011) && (fun3 == 3'b001);
     assign lhu = (opcode == 7'b0000011) && (fun3 == 3'b101);
 
-    assign ALUctrl = (sub | sltiu | sltu | bge | bgeu | blt | bltu | slt | slti) ? 6: (sll | slli) ? 3 : (srl | srli) ? 4 : (and_ | andi) ? 0: (or_ | ori) ? 1 : (xor_ | xori) ? 5 : 2;
-    
+    assign ALUctrl = (sub | sltiu | sltu | bne | beq | bge | bgeu | blt | bltu | slt | slti) ? 4'd6 :
+                     (and_ | andi) ? 4'd0 :
+                     (or_ | ori) ? 4'd1 :
+                     (xor_ | xori) ? 4'd5 :
+                     (sll | slli) ? 4'd3 :
+                     (sra | srai) ? 4'd4 : 4'd2;    
 
 endmodule

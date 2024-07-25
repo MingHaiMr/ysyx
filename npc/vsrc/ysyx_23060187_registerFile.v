@@ -8,7 +8,7 @@ module ysyx_23060187_registerFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   input [ADDR_WIDTH-1:0] raddr2,
   output [DATA_WIDTH-1:0] rdata2,
   output [DATA_WIDTH-1:0] GPR10,
-  output [DATA_WIDTH-1:0] t0
+  output [DATA_WIDTH-1:0] GPR15
 );
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
   always @(posedge clk) begin
@@ -17,6 +17,5 @@ module ysyx_23060187_registerFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   assign rdata1 = rf[raddr1];
   assign rdata2 = rf[raddr2];
   assign GPR10 = rf[10];
-  assign t0 = rf[0]; 
-
+  assign GPR15 = rf[15];
 endmodule
