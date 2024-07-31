@@ -15,7 +15,7 @@
 #include <dlfcn.h>
 #endif
 
-
+#define MAX_INST 2147483647
 
 VerilatedContext *contextp=NULL;
 VerilatedVcdC* tfp=NULL;
@@ -105,7 +105,7 @@ void restart()
               npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
               //if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
             }
-            printf("$a0 is 0x%08x $a5 is 0x%08x cout is %d\n", top->reg_a0, top->reg_a5, top->cout_);
+            printf("$a0 is 0x%08x $a5 is 0x%08x\n", top->reg_a0, top->reg_a5);
             //printf("opnum1 = 0x%08x opnum2 = 0x%08x rd = 0x%08x\n", top->op1, top->op2, top->rd_display);
         }
     }
@@ -120,7 +120,7 @@ void excute_once()
     npc_reg.pc = top->pc;
     if(top->clk == 1)
     {
-        printf("pc: 0x%08x\n", top->pc);
+        printf("pc: 0x%08x ", top->pc);
         printf("inst: %08x\n", top->rootp->ysyx_23060187_top__DOT__instruction);
     }
     #ifdef CONFIG_DIFFTEST
@@ -217,7 +217,13 @@ static char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-  cpu_exec(-1);
+  for(int i = 0; i < MAX_INST; i++)
+  {
+    cpu_exec(2);
+    #ifdef CONFIG_DIFFTEST
+    difftest_step(npc_reg.pc, npc_reg.pc);
+    #endif
+  }
   return 0;
 }
 
@@ -448,11 +454,19 @@ void checkregs(NPCREG *ref, vaddr_t pc) {
 bool isa_difftest_checkregs(NPCREG *ref_r, vaddr_t pc)
 {
     bool diff = false;
-    for (int i = 0; i < 32; i ++) {
+    if(npc_reg.pc == ref_r->pc)
+    {
+      for (int i = 0; i < 32; i ++) {
         if (npc_reg.gpr[i] != ref_r->gpr[i]) {
-            printf("gpr number = %d npc_reg.gpr = 0x%08x but ref_r.gpr = 0x%08x\n", i, npc_reg.gpr[i], ref_r->gpr[i]);
-            diff = true;
+          printf("$%s npc_reg.gpr = 0x%08x ref_r.gpr = 0x%08x\n", regs[i], npc_reg.gpr[i], ref_r->gpr[i]);
+          diff = true;
         }
+      }
+    }
+    else
+    {
+      printf("pc incorrect! npc pc : 0x%08x ref pc : 0x%08x\n", npc_reg.pc, ref_r->pc);
+      diff = true;
     }
     return !diff;
 }

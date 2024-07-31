@@ -48,7 +48,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
-  printf("s->pc = 0x%08x\n", s->pc);
+  //printf("s->pc = 0x%08x\n", s->pc);
   s->snpc = pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
@@ -82,7 +82,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
-    printf("cpu.pc = 0x%08x\n", cpu.pc);
+    //printf("cpu.pc = 0x%08x\n", cpu.pc);
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);

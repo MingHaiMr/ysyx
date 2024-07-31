@@ -23,6 +23,7 @@ extern int pmem_read(int raddr) {
 }
 
 extern void pmem_write(int waddr, int wdata, char wmask) {
+  printf("write address : 0x%08x write data : 0x%08x write mask : 0x%08x\n", waddr, wdata, wmask);
   if(likely(in_pmem(waddr))) {
     word_t write_select = 0;
     uint8_t mask = wmask;

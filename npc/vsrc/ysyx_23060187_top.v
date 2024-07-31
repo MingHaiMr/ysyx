@@ -100,7 +100,7 @@ module ysyx_23060187_top(
     assign cout_ = cout;
     assign valid = 1;
     assign wen = (sb | sw | sh) ? 0 : 1;
-    assign mem_wen = (sb) ? 1 : 0;
+    assign mem_wen = (sb | sw) ? 1 : 0;
     assign opnumber1 = (auipc | jal | jalr) ? pc : src1;
     assign opnumber2 = (addi | auipc | sltiu | andi | ori | xori | slti) ? imm : 
                        (add | sltu | bne | beq | sll | srl | and_ | or_ | xor_ | bge | bgeu | blt | slt | sub) ? src2 : 
@@ -198,7 +198,7 @@ module ysyx_23060187_top(
         .rdata1(instruction[31:0]),
         .raddr2(mem_raddr[31:0]),
         .rdata2(mem_rdata[31:0]),
-        .waddr(mem_waddr),
+        .waddr(mem_waddr[31:0]),
         .wdata(mem_wdata[31:0]),
         .wmask(wmask[7:0])
     );
