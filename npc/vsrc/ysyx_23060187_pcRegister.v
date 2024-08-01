@@ -17,9 +17,18 @@ module ysyx_23060187_pcRegister(
 
     always @(posedge clk or posedge rst) begin
         if(rst) begin pc_out <= 32'h80000000; end
-        else if(jal || ((bne || bge || bgeu) && !isjump) || ((beq || blt || bltu) && isjump)) begin pc_out <= pc_out + imm; end
-        else if(jalr) begin pc_out <= (src1 + imm) & (32'b11111111_11111111_11111111_11111110); end
-        else begin pc_out <= pc_out + 4; end
+        else if(jal || ((bne || bge || bgeu) && !isjump) || ((beq || blt || bltu) && isjump)) begin 
+            //$display("\npc jump!\n"); 
+            pc_out <= (pc_out + imm) & 32'b11111111_11111111_11111111_11111100; 
+        end
+        else if(jalr) begin 
+            //$display("\npc jump!\n"); 
+            pc_out <= (src1 + imm) & (32'b11111111_11111111_11111111_11111110); 
+            end
+        else begin 
+            //$display("\npc not jump!\n"); 
+            pc_out <= pc_out + 4; 
+        end
     end
 
 endmodule

@@ -14,7 +14,7 @@ C_F+= -CFLAGS "-g"
 #C_F +=  -CFLAGS "-DTARGET_AM"
 export LD_LIBRARY_PATH=/home/chengchen/Desktop/ysyx/nemu/build/nemu-interpreter
 LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lreadline -lncurses /home/chengchen/Desktop/ysyx/nemu/build/riscv32-nemu-interpreter-so -lpthread -ldl
-IMG ?= ../am-kernels/tests/cpu-tests/build/sum-riscv32-nemu.bin
+IMG ?= ../am-kernels/tests/cpu-tests/build/bit-riscv32-nemu.bin #img file path(tools.h)
 RUNFLAGS := $(IMG) ../nemu/build/riscv32-nemu-interpreter-so
 NPC_EXEC := ./obj_dir/Vysyx_23060187_top
 

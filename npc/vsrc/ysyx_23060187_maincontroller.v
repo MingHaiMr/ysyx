@@ -69,7 +69,7 @@ module ysyx_23060187_maincontroller(
     assign srli = (opcode == 7'b0010011) && (fun3 == 3'b101) && (fun7 == 7'b0000000);
     assign slli = (opcode == 7'b0010011) && (fun3 == 3'b001) && (fun7 == 7'b0000000);
     assign bge = (opcode == 7'b1100011) && (fun3 == 3'b101);
-    assign bgeu = (opcode == 7'b0010011) && (fun3 == 3'b111);
+    assign bgeu = (opcode == 7'b1100011) && (fun3 == 3'b111);
     assign sra = (opcode == 7'b0110011) && (fun3 == 3'b101) && (fun7 == 7'b0100000);
     assign srai = (opcode == 7'b0010011) && (fun3 == 3'b101) && (fun7 == 7'b0100000);
     assign blt = (opcode == 7'b1100011) && (fun3 == 3'b100);

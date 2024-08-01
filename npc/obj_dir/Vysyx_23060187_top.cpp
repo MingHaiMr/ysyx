@@ -15,9 +15,11 @@ Vysyx_23060187_top::Vysyx_23060187_top(VerilatedContext* _vcontextp__, const cha
     , clk{vlSymsp->TOP.clk}
     , rst{vlSymsp->TOP.rst}
     , cout_{vlSymsp->TOP.cout_}
+    , aluctrl{vlSymsp->TOP.aluctrl}
     , pc{vlSymsp->TOP.pc}
     , reg_a0{vlSymsp->TOP.reg_a0}
     , reg_a5{vlSymsp->TOP.reg_a5}
+    , result_{vlSymsp->TOP.result_}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context

@@ -18,7 +18,7 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
         VL_IN8(clk,0,0);
         VL_IN8(rst,0,0);
         VL_OUT8(cout_,0,0);
-        CData/*3:0*/ ysyx_23060187_top__DOT__ALUctrl;
+        VL_OUT8(aluctrl,3,0);
         CData/*0:0*/ ysyx_23060187_top__DOT__jalr;
         CData/*0:0*/ ysyx_23060187_top__DOT__sub;
         CData/*0:0*/ ysyx_23060187_top__DOT__sltiu;
@@ -35,6 +35,7 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
         CData/*0:0*/ ysyx_23060187_top__DOT__xori;
         CData/*0:0*/ ysyx_23060187_top__DOT__slli;
         CData/*0:0*/ ysyx_23060187_top__DOT__bge;
+        CData/*0:0*/ ysyx_23060187_top__DOT__bgeu;
         CData/*0:0*/ ysyx_23060187_top__DOT__sra;
         CData/*0:0*/ ysyx_23060187_top__DOT__blt;
         CData/*0:0*/ ysyx_23060187_top__DOT__slt;
@@ -46,16 +47,13 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
         CData/*0:0*/ ysyx_23060187_top__DOT__rem;
         CData/*0:0*/ ysyx_23060187_top__DOT__remu;
         CData/*0:0*/ ysyx_23060187_top__DOT__lbu;
-        CData/*0:0*/ ysyx_23060187_top__DOT__sb;
-        CData/*0:0*/ ysyx_23060187_top__DOT__sw;
         CData/*0:0*/ ysyx_23060187_top__DOT__lw;
-        CData/*0:0*/ ysyx_23060187_top__DOT__sh;
         CData/*0:0*/ ysyx_23060187_top__DOT__lh;
         CData/*0:0*/ ysyx_23060187_top__DOT__lhu;
         CData/*0:0*/ ysyx_23060187_top__DOT__isjump;
         CData/*4:0*/ ysyx_23060187_top__DOT__shift_amt;
+        CData/*0:0*/ ysyx_23060187_top__DOT__valid2;
         CData/*0:0*/ ysyx_23060187_top__DOT__mem_wen;
-        CData/*0:0*/ ysyx_23060187_top__DOT____VdfgTmp_h0a761947__0;
         CData/*0:0*/ ysyx_23060187_top__DOT____VdfgTmp_h9142cc3d__0;
         CData/*0:0*/ ysyx_23060187_top__DOT__maincontroller__DOT____VdfgTmp_h138b15c4__0;
         CData/*0:0*/ ysyx_23060187_top__DOT__maincontroller__DOT____VdfgTmp_h1387158b__0;
@@ -68,40 +66,39 @@ class Vysyx_23060187_top___024root final : public VerilatedModule {
         CData/*0:0*/ __VdfgTmp_h431b7873__0;
         CData/*0:0*/ __VdfgTmp_h2c8c28ec__0;
         CData/*0:0*/ __Vfunc_ysyx_23060187_top__DOT__dpi1__DOT__is_ebreak__0__Vfuncout;
-        CData/*0:0*/ __VstlDidInit;
         CData/*0:0*/ __Vtrigrprev__TOP__clk;
         CData/*0:0*/ __Vtrigrprev__TOP__rst;
-        CData/*0:0*/ __VactDidInit;
         CData/*0:0*/ __VactContinue;
         VL_OUT(pc,31,0);
         VL_OUT(reg_a0,31,0);
         VL_OUT(reg_a5,31,0);
+        VL_OUT(result_,31,0);
         IData/*31:0*/ ysyx_23060187_top__DOT__result;
         IData/*31:0*/ ysyx_23060187_top__DOT__imm;
         IData/*31:0*/ ysyx_23060187_top__DOT__src1;
-    };
-    struct {
         IData/*31:0*/ ysyx_23060187_top__DOT__src2;
         IData/*31:0*/ ysyx_23060187_top__DOT__opnumber1;
         IData/*31:0*/ ysyx_23060187_top__DOT__opnumber2;
+    };
+    struct {
         IData/*31:0*/ ysyx_23060187_top__DOT__instruction;
         IData/*31:0*/ ysyx_23060187_top__DOT__mem_raddr;
         IData/*31:0*/ ysyx_23060187_top__DOT__mem_rdata;
         IData/*31:0*/ ysyx_23060187_top__DOT____VdfgTmp_h6f5860e0__0;
-        IData/*31:0*/ ysyx_23060187_top__DOT____VdfgTmp_h623b28b4__0;
+        IData/*31:0*/ ysyx_23060187_top__DOT__decode__DOT__R_imm;
+        IData/*31:0*/ ysyx_23060187_top__DOT__alu__DOT__res;
         IData/*31:0*/ __Vfunc_ysyx_23060187_top__DOT__dpi2__DOT__pmem_read__1__Vfuncout;
         IData/*31:0*/ __Vfunc_ysyx_23060187_top__DOT__dpi2__DOT__pmem_read__2__Vfuncout;
-        IData/*31:0*/ __Vtrigrprev__TOP__ysyx_23060187_top__DOT__instruction;
         IData/*31:0*/ __VstlIterCount;
         IData/*31:0*/ __VactIterCount;
         QData/*63:0*/ ysyx_23060187_top__DOT____VdfgTmp_h96d74d7a__0;
         QData/*63:0*/ ysyx_23060187_top__DOT____VdfgTmp_h5bd96c3a__0;
         VlUnpacked<IData/*31:0*/, 32> ysyx_23060187_top__DOT__register1__DOT__rf;
-        VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;
+        VlUnpacked<CData/*0:0*/, 4> __Vm_traceActivity;
     };
-    VlTriggerVec<2> __VstlTriggered;
-    VlTriggerVec<3> __VactTriggered;
-    VlTriggerVec<3> __VnbaTriggered;
+    VlTriggerVec<1> __VstlTriggered;
+    VlTriggerVec<2> __VactTriggered;
+    VlTriggerVec<2> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vysyx_23060187_top__Syms* const vlSymsp;

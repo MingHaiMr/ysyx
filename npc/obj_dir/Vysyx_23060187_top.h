@@ -29,9 +29,11 @@ class Vysyx_23060187_top VL_NOT_FINAL : public VerilatedModel {
     VL_IN8(&clk,0,0);
     VL_IN8(&rst,0,0);
     VL_OUT8(&cout_,0,0);
+    VL_OUT8(&aluctrl,3,0);
     VL_OUT(&pc,31,0);
     VL_OUT(&reg_a0,31,0);
     VL_OUT(&reg_a5,31,0);
+    VL_OUT(&result_,31,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.

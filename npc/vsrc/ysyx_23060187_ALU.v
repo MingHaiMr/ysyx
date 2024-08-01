@@ -6,17 +6,18 @@ module ysyx_23060187_ALU(
     output zero,
     output reg cout
 );
-    assign zero = (result == 0);
-    always @(ALUctrl, opnum1, opnum2) begin
+    reg [31:0]res;
+    assign zero = (result == 0) || ((opnum1 == 0 && opnum2 == 0) && (ALUctrl == 4'd6));
+    always @(*) begin
         case(ALUctrl)
-            0: begin result = opnum1 & opnum2; cout = 0; end
-            1: begin result = opnum1 | opnum2; cout = 0; end
-            2: {cout, result} = opnum1 + opnum2;
-            3: begin result = opnum1 << opnum2; cout = 0; end
-            4: begin result = opnum1 >> opnum2; cout = 0; end
-            5: begin result = opnum1 ^ opnum2; cout = 0; end
-            6: {cout, result} = opnum1 + opnum2 ^ 32'hffffffff + 1;
-            default: result = 0;
+            0: begin result = opnum1 & opnum2; cout = 0; res = 0; end
+            1: begin result = opnum1 | opnum2; cout = 0; res = 0; end
+            2: begin {cout, res} = opnum1 + opnum2; result = opnum1 + opnum2; end
+            3: begin result = opnum1 << opnum2; cout = 0; res = 0; end
+            4: begin result = opnum1 >> opnum2; cout = 0; res = 0; end
+            5: begin result = opnum1 ^ opnum2; cout = 0; res = 0; end
+            6: begin {cout, res} = opnum1 + opnum2 ^ 32'b11111111_11111111_11111111_11111111 + 32'd1; result = opnum1 - opnum2; end
+            default: begin result = 0 ; res = 0; end
         endcase
     end
     
