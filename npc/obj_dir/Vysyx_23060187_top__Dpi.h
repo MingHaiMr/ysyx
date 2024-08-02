@@ -19,7 +19,7 @@ extern "C" {
     // DPI import at vsrc/ebreak_dpi.v:2:29
     extern svBit is_ebreak(int inst, int gpr10);
     // DPI import at vsrc/mem_dpi.v:2:33
-    extern int pmem_read(int raddr);
+    extern int pmem_read(int raddr, int len);
     // DPI import at vsrc/mem_dpi.v:3:34
     extern void pmem_write(int waddr, int wdata, char wmask);
 

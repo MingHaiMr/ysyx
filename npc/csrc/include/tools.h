@@ -105,7 +105,7 @@ void restart()
               npc_reg.gpr[i] = top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i];
               //if(i == 5) {printf("$t0 = 0x%08x", top->rootp->ysyx_23060187_top__DOT__register1__DOT__rf[i]);}
             }
-            printf("$a0 is 0x%08x $a5 is 0x%08x cout is %d ctrl is %d result is 0x%08x\n", top->reg_a0, top->reg_a5, top->cout_, top->aluctrl, top->result_);
+            printf("$a0 is 0x%08x $a5 is 0x%08x overflow is %d ctrl is %d result is 0x%08x jump is %d\n", top->reg_a0, top->reg_a5, top->overflow_, top->aluctrl, top->result_, top->jump_);
             //printf("opnum1 = 0x%08x opnum2 = 0x%08x rd = 0x%08x\n", top->op1, top->op2, top->rd_display);
         }
     }
@@ -132,7 +132,7 @@ void excute_once()
       {
         ///img path need to be defined
         //////////////////////////////
-        init_difftest(ref_so_file_path, getFileSize("/home/chengchen/Desktop/ysyx/am-kernels/tests/cpu-tests/build/bit-riscv32-nemu.bin"), 0);
+        init_difftest(ref_so_file_path, getFileSize("/home/chengchen/Desktop/ysyx/am-kernels/tests/cpu-tests/build/to-lower-case-riscv32-nemu.bin"), 0);
         //////////////////////////////
         //////////////////////////////
         printf("difftest init!\n");
@@ -277,7 +277,7 @@ static int cmd_x(char *args)
     //printf("%d",n);
     for(i=0;i<n;i++)
     {
-        paddr_t data=pmem_read(addr+i*4);
+        paddr_t data=pmem_read(addr+i*4, 4);
         printf("0x%08x\n",data);
     }
     return 0;

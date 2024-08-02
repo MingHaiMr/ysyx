@@ -73,7 +73,7 @@ module ysyx_23060187_maincontroller(
     assign sra = (opcode == 7'b0110011) && (fun3 == 3'b101) && (fun7 == 7'b0100000);
     assign srai = (opcode == 7'b0010011) && (fun3 == 3'b101) && (fun7 == 7'b0100000);
     assign blt = (opcode == 7'b1100011) && (fun3 == 3'b100);
-    assign bltu = (opcode == 7'b0010011) && (fun3 == 3'b110);
+    assign bltu = (opcode == 7'b1100011) && (fun3 == 3'b110);
     assign slt = (opcode == 7'b0110011) && (fun3 == 3'b010) && (fun7 == 7'b0000000);
     assign slti = (opcode == 7'b0010011) && (fun3 == 3'b010) && (fun7 == 7'b0000000);
     assign mul = (opcode == 7'b0110011) && (fun3 == 3'b000) && (fun7 == 7'b0000001);
@@ -95,6 +95,6 @@ module ysyx_23060187_maincontroller(
                      (or_ | ori) ? 4'd1 :
                      (xor_ | xori) ? 4'd5 :
                      (sll | slli) ? 4'd3 :
-                     (sra | srai) ? 4'd4 : 4'd2;    
+                     (sra | srai | srli | srl) ? 4'd4 : 4'd2;    
 
 endmodule
