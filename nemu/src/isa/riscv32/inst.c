@@ -117,6 +117,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 101 ????? 00000 11", lhu    , I, R(rd) = Mr(src1 + imm, 2));
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, R(rd) = (uint32_t)(((int64_t)(int32_t)src1 * (int64_t)(int32_t)src2) >> 32));
   INSTPAT("0100000 ????? ????? 101 ????? 01100 11", sra    , R, R(rd) = shamt(src1, BITS(src2, 4, 0)));
+  INSTPAT("??????? ????? ????? 000 ????? 00000 11", lb     , R, R(rd) = SEXT(BITS(Mr(src1 + imm, 1), 7, 0), 8));
 
   
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
@@ -131,6 +132,6 @@ static int decode_exec(Decode *s) {
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
   IFDEF(CONFIG_ITRACE,irbuf_push(s->pc, s->isa.inst.val));
-  printf("s->isa.inst.val = 0x%08x\n", s->isa.inst.val);
+  //printf("s->isa.inst.val = 0x%08x\n", s->isa.inst.val);
   return decode_exec(s);
 }

@@ -49,6 +49,35 @@ int vprintf(void (*putch)(char), const char *fmt, va_list ap) {
           pos++;
         }
         break;
+      case 'c':
+        char *s_ = va_arg(ap, char *);
+        while(*s_) {
+          putch(*(s_++));
+          pos++;
+        }
+        break;
+      case '0':
+        int width;
+        fmt++;
+        width =  *fmt - '0';
+        fmt ++;
+        if(*fmt == 'd')
+        {
+          itoa(va_arg(ap, int), tmp, 10);
+        }
+        else if(*fmt == 'x')
+        {
+          itoa(va_arg(ap, int), tmp, 16);
+        }
+        for(int i = 0; i < width - strlen(tmp); i++) {
+          putch(' ');
+          pos++;
+        }
+        for(int i = 0; i < strlen(tmp); i++) {
+          putch(tmp[i]);
+          pos++;
+        }
+        break;
       default:
         assert(0);
         break;

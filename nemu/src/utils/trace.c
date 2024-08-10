@@ -1,6 +1,6 @@
 #include "trace.h"
 #include <stdio.h>
-
+#ifdef CONFIG_ITRACE
 void irbuf_push(word_t pc, uint32_t inst) {
     irbuf[irbuf_head].pc = pc;
     irbuf[irbuf_head].inst = inst;
@@ -20,7 +20,7 @@ void irbuf_dump() {
     int curloc = isFull ? endloc : 0;
     while((curloc + 1) % IRINGBUF_SIZE != endloc) {
         p += sprintf(p, "%s" FMT_WORD ": %08x", (curloc + 1) % IRINGBUF_SIZE == endloc ? "-->" : "   ", irbuf[curloc].pc, irbuf[curloc].inst);
-        disassemble(p, sizeof(buf) - (p - buf), irbuf[curloc].pc, (uint8_t *)&irbuf[curloc].inst, 4);
+        //disassemble(p, sizeof(buf) - (p - buf), irbuf[curloc].pc, (uint8_t *)&irbuf[curloc].inst, 4);
         if((curloc + 1) % IRINGBUF_SIZE == endloc) {
             printf(ANSI_FG_RED);
         }
@@ -38,7 +38,7 @@ void pwrite_dump(paddr_t addr, int len, word_t data)
 {
     printf("write addr = " FMT_PADDR "len = %d data =" FMT_WORD "\n", addr, len, data);
 }
-
+#endif
 
 
 

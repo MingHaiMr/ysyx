@@ -3,7 +3,7 @@
 
 #include <common.h>
 #include <utils.h>
-
+#ifdef CONFIG_ITRACE
 #define IRINGBUF_SIZE 16
 
 typedef struct {
@@ -18,4 +18,5 @@ void irbuf_push(word_t pc, uint32_t inst);
 void irbuf_dump();
 void pread_dump(paddr_t addr, int len);
 void pwrite_dump(paddr_t addr, int len, word_t data);
+#endif
 #endif

@@ -101,7 +101,9 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
+  #ifdef CONFIG_ITRACE
   irbuf_dump();//Display the instruction buffer
+  #endif
   isa_reg_display();
   statistic();
 }
