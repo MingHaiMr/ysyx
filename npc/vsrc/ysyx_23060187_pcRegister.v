@@ -34,7 +34,7 @@ module ysyx_23060187_pcRegister(
             pc_out <= (src1 + imm); 
             end
         else begin 
-            $display("\npc not jump!\n"); 
+            //$display("\npc not jump!\n"); 
             pc_out <= pc_out + 4; 
         end
     end

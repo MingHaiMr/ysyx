@@ -69,7 +69,7 @@ Area __am_heap_init() {
 
 void __am_lapic_init() {
   for (char *st = (char *)0xf0000; st != (char *)0xffffff; st ++) {
-    if (*(volatile uint32_t *)st == 0x5f504d5f) {
+    if (st == 0x5f504d5f) {
       uint32_t mpconf_ptr = ((volatile MPDesc *)st)->conf;
       MPConf *conf = (void *)((uintptr_t)(mpconf_ptr));
       __am_lapic = (void *)((uintptr_t)(conf->lapicaddr));
