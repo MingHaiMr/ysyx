@@ -10,7 +10,10 @@ uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - MEMORY_BASE; }
 paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + MEMORY_BASE; }
 
 extern int pmem_read(int raddr, int len) {
-  if(likely(in_pmem(raddr))){
+  if(raddr == 0xa0000048) {
+      
+  }
+  else if(likely(in_pmem(raddr))){
     word_t ret = host_read(guest_to_host(raddr), len);
     //printf("inst: 0x%08x\n", ret);
     return ret;
@@ -24,7 +27,10 @@ extern int pmem_read(int raddr, int len) {
 
 extern void pmem_write(int waddr, int wdata, char wmask) {
   printf("write address : 0x%08x write data : 0x%08x write mask : 0x%08x\n", waddr, wdata, wmask);
-  if(likely(in_pmem(waddr))) {
+  if(waddr == 0xa00003F8) {
+      putchar(wdata);
+  }
+  else if(likely(in_pmem(waddr))) {
     uint32_t mask = (uint8_t)wmask;
     if(mask == 1)
     {

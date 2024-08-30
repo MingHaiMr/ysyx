@@ -3,7 +3,7 @@
 
 #define KEYDOWN_MASK 0x8000
 
-#define KEY_QUEUE_LEN 1024
+#define _QUEUE_LEN 1024
 static int key_queue[KEY_QUEUE_LEN] = {};
 static int key_f = 0, key_r = 0;
 static SDL_mutex *key_queue_lock = NULL;
