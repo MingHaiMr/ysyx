@@ -18,14 +18,32 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 #include </home/chengchen/Desktop/ysyx/nemu/src/utils/trace.h>
+#include </home/chengchen/Desktop/ysyx/nemu/include/debug.h>
+
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
+#define csr_ cpu.csr[CSR(imm)]
+#define csr_mepc cpu.csr[mepc]
 
 enum {
   TYPE_I, TYPE_U, TYPE_S, TYPE_J, TYPE_R, TYPE_B,
   TYPE_N, // none
 };
+
+uint32_t temp;
+
+static inline int CSR(int addr)
+{
+  switch(addr)
+  {
+    case 0x300: return mstatus; break;
+    case 0x305: return mtvec; break;
+    case 0x341: return mepc; break;
+    case 0x342: return mcause; break;
+    default: panic("\nCSR ERROR at addr 0x%08x\n", addr);
+  }
+}
 
 #define src1R() do { *src1 = R(rs1); } while (0)
 #define src2R() do { *src2 = R(rs2); } while (0)
@@ -119,7 +137,17 @@ static int decode_exec(Decode *s) {
   INSTPAT("0100000 ????? ????? 101 ????? 01100 11", sra    , R, R(rd) = shamt(src1, BITS(src2, 4, 0)));
   INSTPAT("??????? ????? ????? 000 ????? 00000 11", lb     , R, R(rd) = SEXT(BITS(Mr(src1 + imm, 1), 7, 0), 8));
 
-  
+  INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrcc  , I, temp = csr_, csr_ = temp & (~src1), R(rd) = temp);
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, temp = csr_, csr_ = temp & src1, R(rd) = temp);
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, temp = csr_, csr_ = src1, R(rd) = temp);
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, s->dnpc = isa_raise_intr(11, s->pc));
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , R, s->dnpc = csr_mepc);
+
+
+
+
+
+
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
