@@ -1,51 +1,51 @@
 module ysyx_23060187_maincontroller(
-    input [2:0]fun3,
-    input [6:0]fun7,
-    input [6:0]opcode,
-    output [3:0]ALUctrl,
-    output addi,
-    output auipc,
-    output jal,
-    output jalr,
-    output lui,
-    output add,
-    output sub,
-    output sltiu,
-    output sltu,
-    output bne,
-    output beq,
-    output sll,
-    output srl,
-    output and_,
-    output andi,
-    output or_,
-    output ori,
-    output xor_,
-    output xori,
-    output srli,
-    output slli,
-    output bge,
-    output bgeu,
-    output sra,
-    output srai,
-    output blt,
-    output bltu,
-    output slt,
-    output slti,
-    output mul,
-    output mulh,
-    output div,
-    output divu,
-    output rem,
-    output remu,
-    output lbu,
-    output sb,
-    output sw,
-    output lw,
-    output sh,
-    output lh,
-    output lhu
-);
+        input [2:0]fun3,
+        input [6:0]fun7,
+        input [6:0]opcode,
+        output [3:0]ALUctrl,
+        output addi,
+        output auipc,
+        output jal,
+        output jalr,
+        output lui,
+        output add,
+        output sub,
+        output sltiu,
+        output sltu,
+        output bne,
+        output beq,
+        output sll,
+        output srl,
+        output and_,
+        output andi,
+        output or_,
+        output ori,
+        output xor_,
+        output xori,
+        output srli,
+        output slli,
+        output bge,
+        output bgeu,
+        output sra,
+        output srai,
+        output blt,
+        output bltu,
+        output slt,
+        output slti,
+        output mul,
+        output mulh,
+        output div,
+        output divu,
+        output rem,
+        output remu,
+        output lbu,
+        output sb,
+        output sw,
+        output lw,
+        output sh,
+        output lh,
+        output lhu
+    );
 
     assign auipc = (opcode == 7'b0010111);
     assign jal = (opcode == 7'b1101111);
@@ -65,7 +65,7 @@ module ysyx_23060187_maincontroller(
     assign or_ = (opcode == 7'b0110011) && (fun3 == 3'b110) && (fun7 == 7'b0000000);
     assign ori = (opcode == 7'b0010011) && (fun3 == 3'b110);
     assign xor_ = (opcode == 7'b0110011) && (fun3 == 3'b100) && (fun7 == 7'b0000000);
-    assign xori = (opcode == 7'b0010011) && (fun3 == 3'b100); 
+    assign xori = (opcode == 7'b0010011) && (fun3 == 3'b100);
     assign srli = (opcode == 7'b0010011) && (fun3 == 3'b101) && (fun7 == 7'b0000000);
     assign slli = (opcode == 7'b0010011) && (fun3 == 3'b001) && (fun7 == 7'b0000000);
     assign bge = (opcode == 7'b1100011) && (fun3 == 3'b101);
@@ -75,7 +75,7 @@ module ysyx_23060187_maincontroller(
     assign blt = (opcode == 7'b1100011) && (fun3 == 3'b100);
     assign bltu = (opcode == 7'b1100011) && (fun3 == 3'b110);
     assign slt = (opcode == 7'b0110011) && (fun3 == 3'b010) && (fun7 == 7'b0000000);
-    assign slti = (opcode == 7'b0010011) && (fun3 == 3'b010) && (fun7 == 7'b0000000);
+    assign slti = (opcode == 7'b0010011) && (fun3 == 3'b010);
     assign mul = (opcode == 7'b0110011) && (fun3 == 3'b000) && (fun7 == 7'b0000001);
     assign mulh = (opcode == 7'b0110011) && (fun3 == 3'b001) && (fun7 == 7'b0000001);
     assign div = (opcode == 7'b0110011) && (fun3 == 3'b100) && (fun7 == 7'b0000001);
@@ -91,10 +91,10 @@ module ysyx_23060187_maincontroller(
     assign lhu = (opcode == 7'b0000011) && (fun3 == 3'b101);
 
     assign ALUctrl = (sub | sltiu | sltu | bne | beq | bge | bgeu | blt | bltu | slt | slti) ? 4'd6 :
-                     (and_ | andi) ? 4'd0 :
-                     (or_ | ori) ? 4'd1 :
-                     (xor_ | xori) ? 4'd5 :
-                     (sll | slli) ? 4'd3 :
-                     (sra | srai | srli | srl) ? 4'd4 : 4'd2;    
+           (and_ | andi) ? 4'd0 :
+           (or_ | ori) ? 4'd1 :
+           (xor_ | xori) ? 4'd5 :
+           (sll | slli) ? 4'd3 :
+           (sra | srai | srli | srl) ? 4'd4 : 4'd2;
 
 endmodule

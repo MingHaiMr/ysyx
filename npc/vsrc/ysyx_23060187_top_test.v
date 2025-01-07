@@ -1,13 +1,21 @@
-module ysyx_23060187_top(
+module ysyx_23060187_top_test(
         input clk,
         input rst,
         output [31:0] pc,
-        output [31:0] reg_a0,
-        output [31:0] reg_a5,
+        output [31:0] reg_s1,
+        output [31:0] reg_s2,
         output overflow_,
         output [31:0] result_,
         output [3:0] aluctrl,
-        output jump_
+        output jump_,
+        output [31:0] num1,
+        output [31:0] num2,
+        output [31:0] num3,
+        output [31:0] num4,
+        output [31:0] num5,
+        output [31:0] num6,
+        output [31:0] num7,
+        output [31:0] num8
     );
 
     wire [6:0] opcode;
@@ -17,7 +25,7 @@ module ysyx_23060187_top(
     wire [4:0] rs1;
     wire [4:0] rs2;
     wire [31:0] wdata;
-    wire [31:0] gpr10;
+    wire [31:0] gpr9;
     wire [4:0] rd;
     wire [31:0] imm;
     wire [31:0] src1;
@@ -100,12 +108,15 @@ module ysyx_23060187_top(
     wire [31:0]mem_wdata;
     wire [31:0]mem_rdata;
     wire [7:0]wmask;
-    wire [31:0] gpr15;
+    wire [31:0] gpr18;
     wire overflow;
+    
+    
+
     assign overflow_ = overflow;
     assign aluctrl = ALUctrl;
-    assign reg_a0 = gpr10;
-    assign reg_a5 = gpr15;
+    assign reg_s1 = gpr9;
+    assign reg_s2 = gpr18;
     assign result_ = result;
     assign valid1 = 1;
     assign valid2 = (lbu | lw | lh | lhu);
@@ -173,8 +184,8 @@ module ysyx_23060187_top(
                                          .rdata1(src1[31:0]),
                                          .raddr2(rs2[4:0]),
                                          .rdata2(src2[31:0]),
-                                         .GPR10(gpr10[31:0]),
-                                         .GPR15(gpr15[31:0])
+                                         .GPR9(gpr9[31:0]),
+                                         .GPR18(gpr18[31:0])
                                         );
 
     ysyx_23060187_ALU alu(.ALUctrl(ALUctrl[3:0]),
@@ -202,23 +213,49 @@ module ysyx_23060187_top(
                                         .pc_out(pc[31:0])
                                        );
 
-    ebreak_dpi dpi1(.inst(instruction[31:0]),
-                    .gpr10(gpr10[31:0]),
-                    .pc(pc[31:0])
-                   );
+    //    ebreak_dpi dpi1(.inst(instruction[31:0]),
+    //                    .gpr10(gpr10[31:0]),
+    //                    .pc(pc[31:0])
+    //                   );
 
-    mem_dpi dpi2(.valid1(valid1),
-                 .valid2(valid2),
+    data_ram u_dram(
+                 .clk(clk),
                  .wen(mem_wen),
+                 .valid(valid2),
                  .mem_rlen(mem_rlen[31:0]),
-                 .raddr1(pc[31:0]),
-                 .rdata1(instruction[31:0]),
-                 .raddr2(mem_raddr[31:0]),
-                 .rdata2(mem_rdata[31:0]),
+                 .raddr(mem_raddr[31:0]),
                  .waddr(mem_waddr[31:0]),
                  .wdata(mem_wdata[31:0]),
-                 .wmask(wmask[7:0])
-                );
+                 .rdata(mem_rdata[31:0]),
+                 .num1(num1[31:0]),
+                 .num2(num2[31:0]),
+                 .num3(num3[31:0]),
+                 .num4(num4[31:0]),
+                 .num5(num5[31:0]),
+                 .num6(num6[31:0]),
+                 .num7(num7[31:0]),
+                 .num8(num8[31:0])
+             );
+
+    intr_rom u_irom(
+                 .raddr(pc[31:0]),
+                 .valid(valid1),
+                 .rdata(instruction[31:0])
+             );
+    //    mem_dpi dpi2(.valid1(valid1),
+    //        .valid2(valid2),
+    //        .wen(mem_wen),
+    //        .mem_rlen(mem_rlen[31:0]),
+    //        .raddr1(pc[31:0]),
+    //        .rdata1(instruction[31:0]),
+    //        .raddr2(mem_raddr[31:0]),
+    //        .rdata2(mem_rdata[31:0]),
+    //        .waddr(mem_waddr[31:0]),
+    //        .wdata(mem_wdata[31:0]),
+    //        .wmask(wmask[7:0])
+    //    );
+
+
 
     ysyx_23060187_maincontroller maincontroller(.fun3(fun3[2:0]),
                                  .fun7(fun7[6:0]),

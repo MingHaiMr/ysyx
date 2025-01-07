@@ -1,13 +1,13 @@
 module ysyx_23060187_instDecode(
-    input [31:0] inst,
-    output [4:0] rs1,
-    output [4:0] rs2,
-    output [4:0] rd,
-    output [31:0] imm,
-    output [6:0] opcode,
-    output [2:0] fun3,
-    output [6:0] fun7
-);
+        input [31:0] inst,
+        output [4:0] rs1,
+        output [4:0] rs2,
+        output [4:0] rd,
+        output [31:0] imm,
+        output [6:0] opcode,
+        output [2:0] fun3,
+        output [6:0] fun7
+    );
     wire U_type;
     wire I_type;
     wire J_type;
@@ -42,12 +42,12 @@ module ysyx_23060187_instDecode(
     assign B_imm = {{19{inst[31]}}, inst[31], inst[7], inst[30:25], inst[11:8], {1'b0}};
     assign S_imm = {{20{inst[31]}}, inst[31:25], inst[11:7]};
 
-    assign imm = I_type ? I_imm : 
-                 U_type ? U_imm : 
-                 J_type ? J_imm :
-                 B_type ? B_imm :
-                 S_imm;
-            
+    assign imm = I_type ? I_imm :
+           U_type ? U_imm :
+           J_type ? J_imm :
+           B_type ? B_imm :
+           S_imm;
+
 endmodule
 
 
