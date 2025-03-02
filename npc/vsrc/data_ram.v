@@ -6,19 +6,10 @@ module data_ram(
         input[31:0] raddr,
         input[31:0] waddr,
         input[31:0] wdata,
-        output reg [31:0]rdata,
-        //display 8 numbers in the data ram
-        output[31:0] num1,
-        output[31:0] num2,
-        output[31:0] num3,
-        output[31:0] num4,
-        output[31:0] num5,
-        output[31:0] num6,
-        output[31:0] num7,
-        output[31:0] num8
+        output reg [31:0]rdata
     );
     integer i;
-    reg[31:0] dram[1023:0];
+    reg[31:0] dram[255:0];
     initial begin
         $readmemb("array.txt",dram);
     end
@@ -52,12 +43,4 @@ module data_ram(
             end
         end
     end
-    assign num1 = dram[0];
-    assign num2 = dram[1];
-    assign num3 = dram[2];
-    assign num4 = dram[3];
-    assign num5 = dram[4];
-    assign num6 = dram[5];
-    assign num7 = dram[6];
-    assign num8 = dram[7];
 endmodule
