@@ -506,21 +506,18 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
       printf("can not catch up with ref.pc = 0x%08x at pc = 0x%08x", ref_r.pc, pc);
     return;
   }
-
   if (is_skip_ref) {
     // to skip the checking of an instruction, just copy the reg state to reference design
     ref_difftest_regcpy(&npc_reg, DIFFTEST_TO_REF);
     is_skip_ref = false;
     return;
   }
-
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
   ref_difftest_exec(1);
   if(top->clk == 1)
   {
     checkregs(&ref_r, pc);
   }
-  
 }
 #endif
 

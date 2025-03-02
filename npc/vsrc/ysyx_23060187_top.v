@@ -154,7 +154,7 @@ module ysyx_23060187_top(
            (sh) ? 8'd3 : 0;
 
 
-    ysyx_23060187_instDecode decode(
+    instDecode decode(
                                  .inst(instruction[31:0]),
                                  .rs1(rs1[4:0]),
                                  .rs2(rs2[4:0]),
@@ -165,7 +165,7 @@ module ysyx_23060187_top(
                                  .fun7(fun7[6:0])
                              );
 
-    ysyx_23060187_registerFile register1(.clk(clk),
+    registerFile register1(.clk(clk),
                                          .wdata(wdata[31:0]),
                                          .waddr(rd[4:0]),
                                          .wen(wen),
@@ -177,7 +177,7 @@ module ysyx_23060187_top(
                                          .GPR15(gpr15[31:0])
                                         );
 
-    ysyx_23060187_ALU alu(.ALUctrl(ALUctrl[3:0]),
+    ALU alu(.ALUctrl(ALUctrl[3:0]),
                           .opnum1(opnumber1[31:0]),
                           .opnum2(opnumber2[31:0]),
                           .result(result[31:0]),
@@ -186,7 +186,7 @@ module ysyx_23060187_top(
                           .overflow(overflow)
                          );
 
-    ysyx_23060187_pcRegister pcRegister(.clk(clk),
+    pcRegister pcRegister(.clk(clk),
                                         .rst(rst),
                                         .jal(jal),
                                         .jalr(jalr),
@@ -220,7 +220,7 @@ module ysyx_23060187_top(
                  .wmask(wmask[7:0])
                 );
 
-    ysyx_23060187_maincontroller maincontroller(.fun3(fun3[2:0]),
+    maincontroller maincontroller(.fun3(fun3[2:0]),
                                  .fun7(fun7[6:0]),
                                  .opcode(opcode[6:0]),
                                  .ALUctrl(ALUctrl[3:0]),
