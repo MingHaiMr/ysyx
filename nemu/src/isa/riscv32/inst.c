@@ -17,8 +17,8 @@
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
-#include </home/chengchen/Desktop/ysyx/nemu/src/utils/trace.h>
-#include </home/chengchen/Desktop/ysyx/nemu/include/debug.h>
+#include </home/haiming/ysyx/nemu/src/utils/trace.h>
+#include </home/haiming/ysyx/nemu/include/debug.h>
 
 #define R(i) gpr(i)
 #define Mr vaddr_read
