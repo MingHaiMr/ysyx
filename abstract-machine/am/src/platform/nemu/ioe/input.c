@@ -1,6 +1,6 @@
 #include <am.h>
 #include <nemu.h>
-#include "/home/chengchen/Desktop/ysyx/abstract-machine/am/src/riscv/riscv.h"
+#include "/home/haiming/ysyx/abstract-machine/am/src/riscv/riscv.h"
 
 #define KEYDOWN_MASK 0x8000
 

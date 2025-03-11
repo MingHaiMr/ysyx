@@ -1,6 +1,6 @@
 #include <am.h>
 #include <nemu.h>
-#include "/home/chengchen/Desktop/ysyx/abstract-machine/am/src/riscv/riscv.h"
+#include "/home/haiming/ysyx/abstract-machine/am/src/riscv/riscv.h"
 #include <stdio.h>
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 

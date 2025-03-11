@@ -1,7 +1,7 @@
 #include <am.h>
 #include <riscv/riscv.h>
 #include <klib.h>
-#include </home/chengchen/Desktop/ysyx/abstract-machine/am/include/arch/riscv.h>
+#include </home/haiming/ysyx/abstract-machine/am/include/arch/riscv.h>
 static Context* (*user_handler)(Event, Context*) = NULL;
 
 Context* __am_irq_handle(Context *c) {
