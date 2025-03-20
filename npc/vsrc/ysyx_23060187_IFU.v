@@ -16,7 +16,7 @@ module ysyx_23060187_IFU(
     reg next_state;
     reg [31:0] inst_reg;
     
-    always @(posedge clk or posedge rst) begin
+    always @(posedge clk or negedge rst) begin
         if (!rst) begin
             current_state <= IDLE;
         end else begin
@@ -46,7 +46,7 @@ module ysyx_23060187_IFU(
         endcase
     end
 
-    always @(posedge clk or posedge rst) begin
+    always @(posedge clk or negedge rst) begin
         if (!rst) begin
             IFU_mem_ready <= 0;
             IFU_IDU_valid <= 0;
@@ -62,7 +62,7 @@ module ysyx_23060187_IFU(
         end
     end
 
-    always @(posedge clk or posedge rst) begin
+    always @(posedge clk or negedge rst) begin
         if (!rst) begin
             inst_reg <= 0;
         end else if (mem_IFU_valid && IFU_mem_ready) begin
