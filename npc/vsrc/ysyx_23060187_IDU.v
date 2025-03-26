@@ -1,22 +1,23 @@
 module ysyx_23060187_IDU(
     input clk,
     input rst,
-    input [31:0] IFU_inst,
+    input [31:0] IFU_IDU_inst,
     input EXU_IDU_ready,
     input IFU_IDU_valid,
     output reg IDU_EXU_valid,
     output reg IDU_IFU_ready,
-    output reg [31:0] waddr,
-    output reg [31:0] wdata,
-    output [31:0] imm,
-    output [31:0] rs1,
-    output [31:0] rs2,
-    output [31:0] rd
+    output reg [31:0] imm,
+    output reg [31:0] rs1,
+    output reg [31:0] rs2,
+    output reg [31:0] rd,
+    output reg operate_num_1_select,
+    output reg [1:0] operate_num_2_select,
+    output reg [3:0] wdata_select,
+    output reg wen,
+    output reg shift_amt_select,
+    output reg [3:0] ALU_ctrl
 );
 
-    assign rs1 = IFU_inst[19:15];
-    assign rs2 = IFU_inst[24:20];
-    assign rd = IFU_inst[11:7];
 
     wire U_type;
     wire I_type;
@@ -24,7 +25,9 @@ module ysyx_23060187_IDU(
     wire B_type;
     wire R_type;
     wire S_type;
+    wire [6:0] opcode;
 
+    assign opcode = IFU_IDU_inst[6:0];
     assign U_type = (opcode == 7'b0010111) | (opcode == 7'b0110111);
     assign I_type = (opcode == 7'b0000011) | (opcode == 7'b0010011) | (opcode == 7'b1100111);
     assign J_type = (opcode == 7'b1101111);
@@ -39,11 +42,11 @@ module ysyx_23060187_IDU(
     wire [31:0] R_imm;
     wire [31:0] S_imm;
 
-    assign U_imm = {IFU_inst[31:12], {12{1'b0}}};
-    assign I_imm = {{20{IFU_inst[31]}}, IFU_inst[31:20]};
-    assign J_imm = {{12{IFU_inst[31]}}, IFU_inst[19:12], IFU_inst[20], IFU_inst[30:21], {1'b0}};
-    assign B_imm = {{19{IFU_inst[31]}}, IFU_inst[31], IFU_inst[7], IFU_inst[30:25], IFU_inst[11:8], {1'b0}};
-    assign S_imm = {{20{IFU_inst[31]}}, IFU_inst[31:25], IFU_inst[11:7]};
+    assign U_imm = {IFU_IDU_inst[31:12], {12{1'b0}}};
+    assign I_imm = {{20{IFU_IDU_inst[31]}}, IFU_IDU_inst[31:20]};
+    assign J_imm = {{12{IFU_IDU_inst[31]}}, IFU_IDU_inst[19:12], IFU_IDU_inst[20], IFU_IDU_inst[30:21], {1'b0}};
+    assign B_imm = {{19{IFU_IDU_inst[31]}}, IFU_IDU_inst[31], IFU_IDU_inst[7], IFU_IDU_inst[30:25], IFU_IDU_inst[11:8], {1'b0}};
+    assign S_imm = {{20{IFU_IDU_inst[31]}}, IFU_IDU_inst[31:25], IFU_IDU_inst[11:7]};
     
     assign imm = I_type ? I_imm :
            U_type ? U_imm :
@@ -137,23 +140,23 @@ module ysyx_23060187_IDU(
     assign lh = (opcode == 7'b0000011) && (fun3 == 3'b001);
     assign lhu = (opcode == 7'b0000011) && (fun3 == 3'b101);
 
-    wire branch_signal;
-    assign branch_signal = bne | beq | bge | bgeu | blt | bltu;
-    wire mem_signal;
-    assign mem_signal = lbu | lw | sb | sw | sh | lh | lhu;
-    wire alu_signal;
-    assign alu_signal = addi | lui | jalr | add | sub | sltiu | sltu | sll | srl | and_ | andi | or_ | ori | xor_ | xori | srli | slli | sra | srai | slt | slti;
-    wire mul_signal;
-    assign mul_signal = mul | mulh | div | divu | rem | remu;
-    wire jal_signal;
-    assign jal_signal = jal | jalr;
-
     parameter IDLE = 0;
     parameter WAIT_READY = 1;
 
     reg current_state;
     reg next_state;
-    
+
+    reg operate_num_1_select_reg;
+    reg [1:0] operate_num_2_select_reg;
+    reg [31:0] rs1_reg;
+    reg [31:0] rs2_reg;
+    reg [31:0] rd_reg;
+    reg [31:0] imm_reg;
+    reg [3:0] wdata_select_reg;
+    reg wen_reg;
+    reg [3:0] ALU_ctrl_reg;
+    reg shift_amt_select_reg;
+
     always @(posedge clk or negedge rst) begin
         if (!rst) begin
             current_state <= IDLE;
@@ -187,21 +190,104 @@ module ysyx_23060187_IDU(
         if (!rst) begin
             IDU_EXU_valid <= 0;
             IDU_IFU_ready <= 0;
-            waddr <= 0;
-            wdata <= 0;  //???
+            operate_num_1_select <= operate_num_1_select_reg;
+            operate_num_2_select <= operate_num_2_select_reg;
+            rs1 <= rs1_reg;
+            rs2 <= rs2_reg;
+            rd <= rd_reg;
+            imm <= imm_reg;
+            wdata_select <= wdata_select_reg;
+            wen <= wen_reg;
+            ALU_ctrl <= ALU_ctrl_reg;
+            shift_amt_select <= shift_amt_select_reg;
         end else if (current_state == IDLE) begin
             IDU_EXU_valid <= 1;
             IDU_IFU_ready <= 0;
-            waddr <= rd;  //???
-            wdata <= IFU_inst; //???
+            operate_num_1_select <= operate_num_1_select_reg;
+            operate_num_2_select <= operate_num_2_select_reg;
+            rs1 <= rs1_reg;
+            rs2 <= rs2_reg;
+            rd <= rd_reg;
+            imm <= imm_reg;
+            wdata_select <= wdata_select_reg;
+            wen <= wen_reg;
+            ALU_ctrl <= ALU_ctrl_reg;
+            shift_amt_select <= shift_amt_select_reg;
         end else if (current_state == WAIT_READY) begin
             IDU_EXU_valid <= 0;
             IDU_IFU_ready <= 1;
-            waddr <= rd;
-            wdata <= IFU_inst; //???
+            operate_num_1_select <= operate_num_1_select_reg;
+            operate_num_2_select <= operate_num_2_select_reg;
+            rs1 <= rs1_reg;
+            rs2 <= rs2_reg;
+            rd <= rd_reg;
+            imm <= imm_reg;
+            wdata_select <= wdata_select_reg;
+            wen <= wen_reg;
+            ALU_ctrl <= ALU_ctrl_reg;
+            shift_amt_select <= shift_amt_select_reg;
         end
     end
 
-
-
+    always @(posedge clk or negedge rst) begin
+        if(!rst) begin
+            operate_num_1_select_reg <= 0;
+            operate_num_2_select_reg <= 0;
+            rs1_reg <= 0;
+            rs2_reg <= 0;
+            rd_reg <= 0;
+            imm_reg <= 0;
+            wdata_select_reg <= 0;
+            wen_reg <= 0;
+            ALU_ctrl_reg <= 0;
+            shift_amt_select_reg <= 0;
+        end
+        else if(IDU_EXU_valid && EXU_IDU_ready) begin
+            operate_num_1_select_reg <= auipc | jal | jalr;
+            operate_num_2_select_reg <= (addi | auipc | sltiu | andi | ori | xori | slti) ? 2'b10 :
+                                          (add | sltu | bne | beq | sll | srl | and_ | or_ | xor_ | bge | bgeu | blt | slt | sub | bltu) ? 2'b01 :
+                                          (srli | slli) ? {{27{1'b0}}, imm_4_0} : 2'b00;
+            rs1_reg <= IFU_IDU_inst[19:15];
+            rs2_reg <= IFU_IDU_inst[24:20];
+            rd_reg <= IFU_IDU_inst[11:7];
+            imm_reg <= I_type ? I_imm :
+                        U_type ? U_imm :
+                        J_type ? J_imm :
+                        B_type ? B_imm :
+                        S_imm;
+            wdata_select_reg <= lui ? 4'b0001 :
+                               (slt | slti) ? 4'b0010 :
+                               (sltiu | sltu) ? 4'b0011 :
+                               (sra | srai) ? 4'b0100 :
+                               (mul | mulh) ? 4'b0101 :
+                               (div | divu) ? 4'b0110 :
+                               (rem | remu) ? 4'b0111 :
+                               (lbu) ? 4'b1000 :
+                               (lw) ? 4'b1001 :
+                               (lh) ? 4'b1010 :
+                               (lhu) ? 4'b1011 :
+                               4'b1100;
+            wen_reg <= (sb | sw | sh | bne | beq | bge | bgeu | blt | bltu) ? 0 : 1; 
+            ALU_ctrl_reg <= (sub | sltiu | sltu | bne | beq | bge | bgeu | blt | bltu | slt | slti) ? 4'd6 :
+                            (and_ | andi) ? 4'd0 :
+                            (or_ | ori) ? 4'd1 :
+                            (xor_ | xori) ? 4'd5 :
+                            (sll | slli) ? 4'd3 :
+                            (sra | srai | srli | srl) ? 4'd4 : 
+                            4'd2;
+            shift_amt_select_reg <= sra;
+        end
+        else begin
+            operate_num_1_select_reg <= operate_num_1_select_reg;
+            operate_num_2_select_reg <= operate_num_2_select_reg;
+            rs1_reg <= rs1_reg;
+            rs2_reg <= rs2_reg;
+            rd_reg <= rd_reg;
+            imm_reg <= imm_reg;
+            wdata_select_reg <= wdata_select_reg;
+            wen_reg <= wen_reg;
+            ALU_ctrl_reg <= ALU_ctrl_reg;
+            shift_amt_select_reg <= shift_amt_select_reg;
+        end
+    end
 endmodule
