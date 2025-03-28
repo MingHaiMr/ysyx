@@ -1,27 +1,31 @@
 module ysyx_23060187_IDU(
     input clk,
     input rst,
+
     input [31:0] IFU_IDU_inst,
+
     input EXU_IDU_ready,
     input IFU_IDU_valid,
     output reg IDU_EXU_valid,
     output reg IDU_IFU_ready,
+
     output reg [31:0] imm,
     output reg [31:0] rs1,
     output reg [31:0] rs2,
     output reg [31:0] rd,
+
     output reg operate_num_1_select,
     output reg [1:0] operate_num_2_select,
     output reg [3:0] wdata_select,
-    output reg register_wen,
-    output reg memory_wen,
     output reg shift_amt_select,
     output reg [3:0] ALU_ctrl,
     output reg mul_select,
     output reg div_select,
-    output reg rem_select
-);
+    output reg rem_select,
 
+    output reg register_wen,
+    output reg memory_wen
+);
 
     wire U_type;
     wire I_type;

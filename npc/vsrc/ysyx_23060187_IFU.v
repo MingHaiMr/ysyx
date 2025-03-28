@@ -1,7 +1,9 @@
 module ysyx_23060187_IFU(
     input clk,
     input rst,
-    input [31:0] inst_in,
+
+    input [31:0] MEM_IFU_inst_in,
+
     input mem_IFU_valid,
     output reg IFU_mem_ready,
     output reg [31:0] inst_out,
@@ -66,8 +68,7 @@ module ysyx_23060187_IFU(
         if (!rst) begin
             inst_reg <= 0;
         end else if (mem_IFU_valid && IFU_mem_ready) begin
-            inst_reg <= inst_in;
+            inst_reg <= MEM_IFU_inst_in;
         end
     end
-    
 endmodule
