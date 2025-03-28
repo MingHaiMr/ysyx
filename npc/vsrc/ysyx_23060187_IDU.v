@@ -13,9 +13,13 @@ module ysyx_23060187_IDU(
     output reg operate_num_1_select,
     output reg [1:0] operate_num_2_select,
     output reg [3:0] wdata_select,
-    output reg wen,
+    output reg register_wen,
+    output reg memory_wen,
     output reg shift_amt_select,
-    output reg [3:0] ALU_ctrl
+    output reg [3:0] ALU_ctrl,
+    output reg mul_select,
+    output reg div_select,
+    output reg rem_select
 );
 
 
@@ -153,9 +157,13 @@ module ysyx_23060187_IDU(
     reg [31:0] rd_reg;
     reg [31:0] imm_reg;
     reg [3:0] wdata_select_reg;
-    reg wen_reg;
+    reg register_wen_reg;
+    reg memory_wen_reg;
     reg [3:0] ALU_ctrl_reg;
     reg shift_amt_select_reg;
+    reg mul_select_reg;
+    reg div_select_reg;
+    reg rem_select_reg;
 
     always @(posedge clk or negedge rst) begin
         if (!rst) begin
@@ -197,9 +205,13 @@ module ysyx_23060187_IDU(
             rd <= rd_reg;
             imm <= imm_reg;
             wdata_select <= wdata_select_reg;
-            wen <= wen_reg;
+            register_wen <= register_wen_reg;
+            memory_wen <= memory_wen_reg;
             ALU_ctrl <= ALU_ctrl_reg;
             shift_amt_select <= shift_amt_select_reg;
+            mul_select <= mul_select_reg;
+            div_select <= div_select_reg;
+            rem_select <= rem_select_reg;
         end else if (current_state == IDLE) begin
             IDU_EXU_valid <= 1;
             IDU_IFU_ready <= 0;
@@ -210,9 +222,13 @@ module ysyx_23060187_IDU(
             rd <= rd_reg;
             imm <= imm_reg;
             wdata_select <= wdata_select_reg;
-            wen <= wen_reg;
+            register_wen <= register_wen_reg;
+            memory_wen <= memory_wen_reg;
             ALU_ctrl <= ALU_ctrl_reg;
             shift_amt_select <= shift_amt_select_reg;
+            mul_select <= mul_select_reg;
+            div_select <= div_select_reg;
+            rem_select <= rem_select_reg;
         end else if (current_state == WAIT_READY) begin
             IDU_EXU_valid <= 0;
             IDU_IFU_ready <= 1;
@@ -223,9 +239,13 @@ module ysyx_23060187_IDU(
             rd <= rd_reg;
             imm <= imm_reg;
             wdata_select <= wdata_select_reg;
-            wen <= wen_reg;
+            memory_wen <= memory_wen_reg;
+            register_wen <= register_wen_reg;
             ALU_ctrl <= ALU_ctrl_reg;
             shift_amt_select <= shift_amt_select_reg;
+            mul_select <= mul_select_reg;
+            div_select <= div_select_reg;
+            rem_select <= rem_select_reg;
         end
     end
 
@@ -238,9 +258,13 @@ module ysyx_23060187_IDU(
             rd_reg <= 0;
             imm_reg <= 0;
             wdata_select_reg <= 0;
-            wen_reg <= 0;
+            register_wen_reg <= 0;
+            memory_wen_reg <= 0;
             ALU_ctrl_reg <= 0;
             shift_amt_select_reg <= 0;
+            mul_select_reg <= 0;
+            div_select_reg <= 0;
+            rem_select_reg <= 0;
         end
         else if(IDU_EXU_valid && EXU_IDU_ready) begin
             operate_num_1_select_reg <= auipc | jal | jalr;
@@ -267,7 +291,8 @@ module ysyx_23060187_IDU(
                                (lh) ? 4'b1010 :
                                (lhu) ? 4'b1011 :
                                4'b1100;
-            wen_reg <= (sb | sw | sh | bne | beq | bge | bgeu | blt | bltu) ? 0 : 1; 
+            register_wen_reg <= (sb | sw | sh | bne | beq | bge | bgeu | blt | bltu) ? 0 : 1; 
+            memory_wen_reg <= (sb | sw | sh);
             ALU_ctrl_reg <= (sub | sltiu | sltu | bne | beq | bge | bgeu | blt | bltu | slt | slti) ? 4'd6 :
                             (and_ | andi) ? 4'd0 :
                             (or_ | ori) ? 4'd1 :
@@ -276,6 +301,9 @@ module ysyx_23060187_IDU(
                             (sra | srai | srli | srl) ? 4'd4 : 
                             4'd2;
             shift_amt_select_reg <= sra;
+            mul_select_reg <= mul;
+            div_select_reg <= div;
+            rem_select_reg <= rem;
         end
         else begin
             operate_num_1_select_reg <= operate_num_1_select_reg;
@@ -285,9 +313,13 @@ module ysyx_23060187_IDU(
             rd_reg <= rd_reg;
             imm_reg <= imm_reg;
             wdata_select_reg <= wdata_select_reg;
-            wen_reg <= wen_reg;
+            register_wen_reg <= register_wen_reg;
+            memory_wen_reg <= memory_wen_reg;
             ALU_ctrl_reg <= ALU_ctrl_reg;
             shift_amt_select_reg <= shift_amt_select_reg;
+            mul_select_reg <= mul_select_reg;
+            div_select_reg <= div_select_reg;
+            rem_select_reg <= rem_select_reg;
         end
     end
 endmodule
