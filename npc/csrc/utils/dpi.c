@@ -15,7 +15,7 @@ svBit is_ebreak(int inst, int gpr_10)
         {
             printf("\n\33[1;31m" "NPC : " "HIT BAD  TRAP !!! " "\033[0m\n");
         }
-        return 1;   
+        return 1;
     }
     else return 0;
 }

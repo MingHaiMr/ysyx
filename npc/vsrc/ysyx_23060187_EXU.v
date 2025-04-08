@@ -8,8 +8,8 @@ module ysyx_23060187_EXU(
 
     input [31:0] REG_EXU_src_1,
     input [31:0] REG_EXU_src_2,
-    input [31:0] REG_EXU_waddr,
     input [3:0] IDU_EXU_ALU_ctrl,
+    input [31:0] IDU_EXU_rd,
 
     input IDU_EXU_wdata_select,
     input IDU_EXU_register_wen,
@@ -27,10 +27,13 @@ module ysyx_23060187_EXU(
 
     input [31:0] MEM_EXU_read_data,
     
-    output EXU_WBU_wen,
+    output EXU_WBU_register_wen,
+    output reg [31:0] EXU_WBU_register_waddr,
     output reg [31:0] EXU_WBU_register_wdata,
-    output reg [31:0] EXU_WBU_memory_wdata,
-    output reg [31:0] EXU_WBU_waddr
+
+    output EXU_WBU_memory_wen,
+    output reg [31:0] EXU_WBU_memory_waddr,
+    output reg [31:0] EXU_WBU_memory_wdata
 );
 
     parameter IDLE = 0;
@@ -146,14 +149,61 @@ module ysyx_23060187_EXU(
 
     always @(posedge clk or negedge rst) begin
         if(!rst) begin
-            EXU_WBU_wen_reg <= 0;
-            EXU_WBU_wdata_reg <= 0;
-            EXU_WBU_waddr_reg <= 0;
+            EXU_WBU_register_wen_reg <= 0;
+            EXU_WBU_register_wdata_reg <= 0;
+            EXU_WBU_register_waddr_reg <= 0;
+            EXU_WBU_memory_wen_reg <= 0;
+            EXU_WBU_memory_waddr_reg <= 0;
+            EXU_WBU_memory_wdata_reg <= 0;
         end
         else if(EXU_WBU_valid && WBU_EXU_ready) begin
             EXU_WBU_register_wen_reg <= IDU_EXU_register_wen;
             EXU_WBU_register_wdata_reg <= register_wdata_value;
-            
+            EXU_WBU_register_waddr_reg <= IDU_EXU_rd;
+            EXU_WBU_memory_wen_reg <= IDU_EXU_memory_wen;
+            EXU_WBU_memory_waddr_reg <= REG_EXU_src_1 + IDU_EXU_imm;
+            EXU_WBU_memory_wdata_reg <= REG_EXU_src_2;
+        end
+        else begin
+            EXU_WBU_register_wen_reg <= EXU_WBU_register_wen_reg;
+            EXU_WBU_register_wdata_reg <= EXU_WBU_register_wdata_reg;
+            EXU_WBU_register_waddr_reg <= EXU_WBU_register_waddr_reg;
+            EXU_WBU_memory_wen_reg <= EXU_WBU_memory_wen_reg;
+            EXU_WBU_memory_waddr_reg <= EXU_WBU_memory_waddr_reg;
+            EXU_WBU_memory_wdata_reg <= EXU_WBU_memory_wdata_reg;
+        end
+    end
+
+    always @(posedge clk or negedge rst) begin
+        if(!rst) begin
+            EXU_IDU_ready <= 0;
+            EXU_WBU_valid <= 0;
+            EXU_WBU_register_wen <= EXU_WBU_register_wen_reg;
+            EXU_WBU_register_waddr <= EXU_WBU_register_waddr_reg;
+            EXU_WBU_register_wdata <= EXU_WBU_register_wdata_reg;
+            EXU_WBU_memory_wen <= EXU_WBU_memory_wen_reg;
+            EXU_WBU_memory_waddr <= EXU_WBU_memory_waddr_reg;
+            EXU_WBU_memory_wdata <= EXU_WBU_memory_wdata_reg;
+        end
+        else if(current_state == IDLE) begin
+            EXU_IDU_ready <= 1;
+            EXU_WBU_valid <= 0;
+            EXU_WBU_register_wen <= EXU_WBU_register_wen_reg;
+            EXU_WBU_register_waddr <= EXU_WBU_register_waddr_reg;
+            EXU_WBU_register_wdata <= EXU_WBU_register_wdata_reg;
+            EXU_WBU_memory_wen <= EXU_WBU_memory_wen_reg;
+            EXU_WBU_memory_waddr <= EXU_WBU_memory_waddr_reg;
+            EXU_WBU_memory_wdata <= EXU_WBU_memory_wdata_reg;
+        end
+        else if(current_state == WAIT_READY) begin
+            EXU_IDU_ready <= 0;
+            EXU_WBU_valid <= 1;
+            EXU_WBU_register_wen <= EXU_WBU_register_wen_reg;
+            EXU_WBU_register_waddr <= EXU_WBU_register_waddr_reg;
+            EXU_WBU_register_wdata <= EXU_WBU_register_wdata_reg;
+            EXU_WBU_memory_wen <= EXU_WBU_memory_wen_reg;
+            EXU_WBU_memory_waddr <= EXU_WBU_memory_waddr_reg;
+            EXU_WBU_memory_wdata <= EXU_WBU_memory_wdata_reg;
         end
     end
 endmodule
