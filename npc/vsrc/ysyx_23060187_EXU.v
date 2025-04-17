@@ -60,7 +60,7 @@ module ysyx_23060187_EXU(
                 end
             end
             WAIT_READY: begin
-                if (WBU_EXU_valid == 0) begin:
+                if (WBU_EXU_ready == 0) begin:
                     next_state = WAIT_READY;
                 end else begin
                     next_state = IDLE;
