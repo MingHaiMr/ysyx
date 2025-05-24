@@ -7,6 +7,7 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
+    //printf("__am_irq_handle: mcause = %d, mepc = 0x%x GPR1 = %d\n", c->mcause, c->mepc, c->GPR1);
     switch (c->mcause) {
       case 11:
         if (c->GPR1 == -1) {

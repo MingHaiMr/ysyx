@@ -1,6 +1,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include "platform.h"
+#include <sys/ucontext.h>
 
 #define TIMER_HZ 100
 #define SYSCALL_INSTR_LEN 7

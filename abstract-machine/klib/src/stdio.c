@@ -6,13 +6,23 @@
 
 void itoa(int n, char *str, int radix) {
   int i = 0;
-  int sign = n;
-  if(sign < 0) n = -n;
-  do {
-    int digit = n % radix;
-    str[i++] = (digit < 10) ? (digit + '0') : (digit - 10 + 'a');
-  } while((n /= radix) != 0);
-  if(sign < 0) str[i++] = '-';
+  // 十六进制不处理符号位
+  if(radix != 16) {
+    int sign = n;
+    if(sign < 0) n = -n;
+    do {
+      int digit = n % radix;
+      str[i++] = (digit < 10) ? (digit + '0') : (digit - 10 + 'a');
+    } while((n /= radix) != 0);
+    if(sign < 0) str[i++] = '-';
+  } else {
+    // 十六进制直接处理无符号值
+    unsigned un = (unsigned)n;
+    do {
+      int digit = un % radix;
+      str[i++] = (digit < 10) ? (digit + '0') : (digit - 10 + 'a');
+    } while((un /= radix) != 0);
+  }
   str[i] = '\0';
   char reverse[100] = {'\0'};
   for (int j = 0; j < i; j++) {
@@ -37,6 +47,13 @@ int vprintf(void (*putch)(char), const char *fmt, va_list ap) {
     switch(*fmt) {
       case 'd': 
         itoa(va_arg(ap, int), tmp, 10);
+        for(int i = 0; i < strlen(tmp); i++) {
+          putch(tmp[i]);
+          pos++;
+        }
+        break;
+      case 'x':
+        itoa(va_arg(ap, int), tmp, 16);
         for(int i = 0; i < strlen(tmp); i++) {
           putch(tmp[i]);
           pos++;

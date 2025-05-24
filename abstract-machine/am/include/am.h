@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include ARCH_H // this macro is defined in $CFLAGS
+#include "arch/native.h" // this macro is defined in $CFLAGS
                 // examples: "arch/x86-qemu.h", "arch/native.h", ...
 
 // Memory protection flags
