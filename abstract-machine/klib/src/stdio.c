@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-void itoa(int n, char *str, int radix) {
+void my_itoa(int n, char *str, int radix) {
   int i = 0;
   // 十六进制不处理符号位
   if(radix != 16) {
@@ -46,14 +46,14 @@ int vprintf(void (*putch)(char), const char *fmt, va_list ap) {
     pos++;
     switch(*fmt) {
       case 'd': 
-        itoa(va_arg(ap, int), tmp, 10);
+        my_itoa(va_arg(ap, int), tmp, 10);
         for(int i = 0; i < strlen(tmp); i++) {
           putch(tmp[i]);
           pos++;
         }
         break;
       case 'x':
-        itoa(va_arg(ap, int), tmp, 16);
+        my_itoa(va_arg(ap, int), tmp, 16);
         for(int i = 0; i < strlen(tmp); i++) {
           putch(tmp[i]);
           pos++;
@@ -80,11 +80,11 @@ int vprintf(void (*putch)(char), const char *fmt, va_list ap) {
         fmt ++;
         if(*fmt == 'd')
         {
-          itoa(va_arg(ap, int), tmp, 10);
+          my_itoa(va_arg(ap, int), tmp, 10);
         }
         else if(*fmt == 'x')
         {
-          itoa(va_arg(ap, int), tmp, 16);
+          my_itoa(va_arg(ap, int), tmp, 16);
         }
         for(int i = 0; i < width - strlen(tmp); i++) {
           putch(' ');
@@ -126,7 +126,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
     fmt++;
     switch(*fmt) {
       case 'd': 
-        itoa(va_arg(ap, int), tmp, 10);
+        my_itoa(va_arg(ap, int), tmp, 10);
         //assert((strcmp(tmp, "1") == 0)||(strcmp(tmp, "2") == 0)||(strcmp(tmp, "12") == 0)||(strcmp(tmp, "10") == 0));
         break;
       case 's':
