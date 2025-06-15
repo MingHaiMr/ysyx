@@ -53,7 +53,7 @@ int vprintf(void (*putch)(char), const char *fmt, va_list ap) {
         }
         break;
       case 'x':
-        my_itoa(va_ arg(ap, int), tmp, 16);
+        my_itoa(va_arg(ap, int), tmp, 16);
         for(int i = 0; i < strlen(tmp); i++) {
           putch(tmp[i]);
           pos++;
